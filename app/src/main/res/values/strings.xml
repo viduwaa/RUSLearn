@@ -6,4 +6,13 @@
     <string name="dashboard_placeholder">Project bootstrapped (M0). Papers, GPA tools and tracking arrive in later milestones.</string>
     <string name="debug_load_papers">Load papers (M1 debug)</string>
     <string name="debug_zero_papers">No papers returned</string>
+
+    <string name="web_client_id">REPLACE_WITH_WEB_CLIENT_ID</string>
+    <string name="login_subtitle">Sign in to continue</string>
+    <string name="login_hint">Use your university account (tec.rjt.ac.lk student email). Papers are stored on Google Drive with university-domain access.</string>
+    <string name="login_privacy">Your credentials are handled by Google. Grades, favourites and tracking never leave this phone.</string>
+    <string name="login_domain_error">Only Rajarata University FOT accounts (tec.rjt.ac.lk) can sign in.</string>
+    <string name="login_failed_generic">Google sign-in failed. Please try again.</string>
+    <string name="login_config_error">Google sign-in is not configured (web client id). See README.</string>
+    <string name="dashboard_logout">Sign out</string>
 </resources>
