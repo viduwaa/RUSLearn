@@ -2,6 +2,7 @@ package com.ruslearn.fot.ui;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
@@ -90,59 +91,123 @@ public final class TopLevelNav {
     }
 
     /**
-     * The ⚙ settings sheet — icon-tile rows matching the mockup (preview section 06).
-     * BottomSheetDialog (Material, already a dependency) gives native touch/gesture
-     * handling — no custom window quirks. Rows dismiss, then act.
+     * The ⚙ settings sheet — the six actions in a ListView inside a
+     * BottomSheetDialog. ListView row taps are framework-owned (the same mechanism
+     * as the papers/favourites lists), so the whole row is one reliable touch
+     * target; the BottomSheet adds native drag-to-dismiss.
      */
     private void showSettingsSheet() {
         View sheet = activity.getLayoutInflater()
                 .inflate(R.layout.view_settings_sheet, null);
+        ListView list = sheet.findViewById(R.id.lvSettings);
+
+        String[] titles = {
+                activity.getString(R.string.settings_favourites),
+                activity.getString(R.string.settings_offline),
+                activity.getString(R.string.settings_request),
+                activity.getString(R.string.settings_theme),
+                activity.getString(R.string.settings_developer),
+                activity.getString(R.string.settings_sign_out)
+        };
+        String[] captions = {
+                activity.getString(R.string.settings_favourites_caption),
+                activity.getString(R.string.settings_offline_caption),
+                activity.getString(R.string.settings_request_caption),
+                themeCaption(),
+                activity.getString(R.string.settings_developer_caption),
+                ""
+        };
+        int[] icons = {
+                R.drawable.ic_star_nav,
+                R.drawable.ic_download,
+                R.drawable.ic_edit,
+                R.drawable.ic_theme,
+                R.drawable.ic_info,
+                R.drawable.ic_power
+        };
+
+        android.widget.SimpleAdapter rows = new android.widget.SimpleAdapter(
+                activity, buildRows(titles, captions), R.layout.item_settings_row,
+                new String[]{"icon", "title", "caption"},
+                new int[]{R.id.ivRowIcon, R.id.tvRowTitle, R.id.tvRowCaption});
+        // SimpleAdapter can't set drawables — bind icons manually per row.
+        rows.setViewBinder(new android.widget.SimpleAdapter.ViewBinder() {
+            @Override
+            public boolean setViewValue(View view, Object data, String textRepresentation) {
+                if (view.getId() == R.id.ivRowIcon) {
+                    ((android.widget.ImageView) view).setBackgroundResource(
+                            icons[((Number) data).intValue()]);
+                    ((android.widget.ImageView) view).setColorFilter(themeIconTint());
+                    return true;
+                }
+                if (view.getId() == R.id.tvRowTitle
+                        && activity.getString(R.string.settings_sign_out).equals(data)) {
+                    ((TextView) view).setTextColor(activity.getColor(R.color.colorStampRed));
+                }
+                return false;
+            }
+        });
+        list.setAdapter(rows);
+
         com.google.android.material.bottomsheet.BottomSheetDialog dialog =
                 new com.google.android.material.bottomsheet.BottomSheetDialog(activity);
         dialog.setContentView(sheet);
-
-        // Theme row shows the current mode (cycling rebuilds the activity, so the
-        // caption is always set fresh here rather than patched after a tap).
-        TextView themeValue = sheet.findViewById(R.id.tvThemeValue);
-        if (themeValue != null) {
-            String mode = new ThemePrefs(activity).load();
-            themeValue.setText(ThemePrefs.PAPER.equals(mode) ? R.string.theme_paper
-                    : ThemePrefs.INK.equals(mode) ? R.string.theme_ink
-                    : R.string.theme_system);
-        }
-
-        sheet.findViewById(R.id.rowFavourites).setOnClickListener(v -> {
+        list.setOnItemClickListener((parent, view, position, id) -> {
             dialog.dismiss();
-            activity.startActivity(new Intent(activity, FavouritesActivity.class));
-        });
-        sheet.findViewById(R.id.rowOffline).setOnClickListener(v -> {
-            dialog.dismiss();
-            activity.startActivity(new Intent(activity, OfflinePapersActivity.class));
-        });
-        sheet.findViewById(R.id.rowRequest).setOnClickListener(v -> {
-            dialog.dismiss();
-            activity.startActivity(new Intent(activity, PaperRequestActivity.class));
-        });
-        sheet.findViewById(R.id.rowTheme).setOnClickListener(v ->
-                cycleTheme(dialog));
-        sheet.findViewById(R.id.rowDeveloper).setOnClickListener(v -> {
-            dialog.dismiss();
-            showDeveloperDetails();
-        });
-        sheet.findViewById(R.id.rowSignOut).setOnClickListener(v -> {
-            dialog.dismiss();
-            signOutHost.onSignOut();
+            if (position == 0) {
+                activity.startActivity(new Intent(activity, FavouritesActivity.class));
+            } else if (position == 1) {
+                activity.startActivity(new Intent(activity, OfflinePapersActivity.class));
+            } else if (position == 2) {
+                activity.startActivity(new Intent(activity, PaperRequestActivity.class));
+            } else if (position == 3) {
+                cycleTheme();
+            } else if (position == 4) {
+                showDeveloperDetails();
+            } else if (position == 5) {
+                signOutHost.onSignOut();
+            }
         });
 
         dialog.show();
     }
 
+    /** SimpleAdapter rows: icon index, title, caption per action. */
+    private static java.util.List<java.util.HashMap<String, Object>> buildRows(
+            String[] titles, String[] captions) {
+        java.util.List<java.util.HashMap<String, Object>> rows = new java.util.ArrayList<>();
+        for (int i = 0; i < titles.length; i++) {
+            java.util.HashMap<String, Object> row = new java.util.HashMap<>();
+            row.put("icon", i);
+            row.put("title", titles[i]);
+            row.put("caption", captions[i]);
+            rows.add(row);
+        }
+        return rows;
+    }
+
+    private String themeCaption() {
+        String mode = new ThemePrefs(activity).load();
+        if (ThemePrefs.PAPER.equals(mode)) {
+            return activity.getString(R.string.theme_paper);
+        }
+        if (ThemePrefs.INK.equals(mode)) {
+            return activity.getString(R.string.theme_ink);
+        }
+        return activity.getString(R.string.theme_system);
+    }
+
+    /** Icon tint follows the theme so glyphs stay visible in Paper and Ink. */
+    private int themeIconTint() {
+        return activity.getColor(R.color.colorFaculty);
+    }
+
     /**
-     * Paper → Ink → System → Paper; saves, then applies with a light status-bar
-     * flash. Theme change rebuilds activities by design (AppCompatDelegate);
-     * the 250ms window animation makes the flip read as intentional, not lag.
+     * Paper → Ink → System → Paper; saves, then applies. The activity rebuild
+     * (AppCompatDelegate contract for night-mode changes) dismisses the sheet;
+     * the fresh sheet shows the new caption.
      */
-    private void cycleTheme(com.google.android.material.bottomsheet.BottomSheetDialog dialog) {
+    private void cycleTheme() {
         ThemePrefs prefs = new ThemePrefs(activity);
         String mode = prefs.load();
         String next;
@@ -157,8 +222,6 @@ public final class TopLevelNav {
                 next = ThemePrefs.PAPER;
         }
         prefs.save(next);
-        // The activity rebuild dismisses the sheet anyway — skip the caption update
-        // (it would flash) and let the new activity's sheet show the fresh caption.
         ThemeSwitcher.apply(prefs);
     }
 

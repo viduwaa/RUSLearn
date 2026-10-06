@@ -1,108 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Settings sheet body (ticket 02b, mockup section 06): icon-tile rows on card
-     stock — the twin of .sheet/.sitem in preview.html. Used inside a Dialog. -->
+<!-- Settings sheet (ticket 02b): the six actions as a ListView — the same
+     row-click mechanism as the app's paper lists, so a tap anywhere on a row
+     is one framework-handled touch target. Card stock wraps the list. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="24dp"
     android:background="@drawable/bg_card"
     android:orientation="vertical"
-    android:paddingStart="8dp"
-    android:paddingEnd="8dp"
     android:paddingTop="8dp"
-    android:paddingBottom="16dp">
+    android:paddingBottom="8dp">
 
-    <!-- Rows are stamped in by SettingsSheetDialog — one per action -->
-    <LinearLayout
-        android:id="@+id/rowFavourites"
-        style="@style/SettingsRow"
-        android:hapticFeedbackEnabled="true">
-
-        <ImageView
-            style="@style/SettingsRow.Icon"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_star_nav" />
-
-        <LinearLayout style="@style/SettingsRow.Text">
-            <TextView style="@style/SettingsRow.Title" android:text="@string/settings_favourites" />
-            <TextView style="@style/SettingsRow.Caption" android:text="@string/settings_favourites_caption" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/rowOffline"
-        style="@style/SettingsRow">
-
-        <ImageView
-            style="@style/SettingsRow.Icon"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_download" />
-
-        <LinearLayout style="@style/SettingsRow.Text">
-            <TextView style="@style/SettingsRow.Title" android:text="@string/settings_offline" />
-            <TextView style="@style/SettingsRow.Caption" android:text="@string/settings_offline_caption" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/rowRequest"
-        style="@style/SettingsRow">
-
-        <ImageView
-            style="@style/SettingsRow.Icon"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_edit" />
-
-        <LinearLayout style="@style/SettingsRow.Text">
-            <TextView style="@style/SettingsRow.Title" android:text="@string/settings_request" />
-            <TextView style="@style/SettingsRow.Caption" android:text="@string/settings_request_caption" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/rowDeveloper"
-        style="@style/SettingsRow">
-
-        <ImageView
-            style="@style/SettingsRow.Icon"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_info" />
-
-        <LinearLayout style="@style/SettingsRow.Text">
-            <TextView style="@style/SettingsRow.Title" android:text="@string/settings_developer" />
-            <TextView style="@style/SettingsRow.Caption" android:text="@string/settings_developer_caption" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/rowTheme"
-        style="@style/SettingsRow">
-
-        <ImageView
-            style="@style/SettingsRow.Icon"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_theme" />
-
-        <LinearLayout style="@style/SettingsRow.Text">
-            <TextView style="@style/SettingsRow.Title" android:text="@string/settings_theme" />
-            <TextView
-                android:id="@+id/tvThemeValue"
-                style="@style/SettingsRow.Caption" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/rowSignOut"
-        style="@style/SettingsRow">
-
-        <ImageView
-            style="@style/SettingsRow.Icon.Danger"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_power" />
-
-        <LinearLayout style="@style/SettingsRow.Text">
-            <TextView style="@style/SettingsRow.Title.Danger" android:text="@string/settings_sign_out" />
-        </LinearLayout>
-    </LinearLayout>
+    <ListView
+        android:id="@+id/lvSettings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:listSelector="?attr/selectableItemBackground"
+        android:scrollbars="none" />
 </LinearLayout>
