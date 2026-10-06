@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground">
+    android:background="@color/colorPaper"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/colorPaper">
+
+    <include android:id="@+id/toolbarInclude" layout="@layout/view_toolbar" />
 
     <LinearLayout
         android:id="@+id/programRow"
@@ -16,14 +25,14 @@
         android:paddingTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/toolbarInclude">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/gpa_program"
-            android:textColor="@color/colorText"
-            android:textStyle="bold" />
+            android:textAppearance="@style/TextAppearance.RUSLearn.Label"
+            android:textColor="@color/colorInk" />
 
         <Spinner
             android:id="@+id/spProgram"
@@ -40,7 +49,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
-        android:background="@color/colorSurface"
+        android:background="@drawable/bg_card"
         android:orientation="vertical"
         android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -63,23 +72,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/gpa_saved_label"
-                    android:textColor="@color/colorTextMuted"
-                    android:textSize="11sp" />
+                    android:textAppearance="@style/TextAppearance.RUSLearn.Label"
+                    android:textColor="@color/colorInkMuted" />
 
                 <TextView
                     android:id="@+id/tvSavedGpa"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorText"
-                    android:textSize="26sp"
-                    android:textStyle="bold" />
+                    android:textAppearance="@style/TextAppearance.RUSLearn.Display"
+                    android:textColor="@color/colorInk" />
 
                 <TextView
                     android:id="@+id/tvSavedBand"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorTextMuted"
-                    android:textSize="12sp" />
+                    android:textAppearance="@style/TextAppearance.RUSLearn.Code"
+                    android:textColor="@color/colorInkMuted" />
             </LinearLayout>
 
             <LinearLayout
@@ -92,23 +100,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/gpa_current_label"
-                    android:textColor="@color/colorTextMuted"
-                    android:textSize="11sp" />
+                    android:textAppearance="@style/TextAppearance.RUSLearn.Label"
+                    android:textColor="@color/colorInkMuted" />
 
                 <TextView
                     android:id="@+id/tvCurrentGpa"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorText"
-                    android:textSize="26sp"
-                    android:textStyle="bold" />
+                    android:textAppearance="@style/TextAppearance.RUSLearn.Display"
+                    android:textColor="@color/colorInk" />
 
                 <TextView
                     android:id="@+id/tvCurrentBand"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorTextMuted"
-                    android:textSize="12sp" />
+                    android:textAppearance="@style/TextAppearance.RUSLearn.Code"
+                    android:textColor="@color/colorInkMuted" />
             </LinearLayout>
         </LinearLayout>
 
@@ -117,8 +124,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:textColor="@color/colorText"
-            android:textSize="13sp" />
+            android:textAppearance="@style/TextAppearance.RUSLearn.Code"
+            android:textColor="@color/colorInk" />
 
         <ProgressBar
             android:id="@+id/pbCredits"
@@ -126,8 +133,8 @@
             android:layout_width="match_parent"
             android:layout_height="12dp"
             android:max="120"
-            android:progressTint="@color/colorAccent"
-            android:secondaryProgressTint="@color/colorBorder" />
+            android:progressTint="@color/colorFaculty"
+            android:secondaryProgressTint="@color/colorHairline" />
     </LinearLayout>
 
     <LinearLayout
@@ -147,8 +154,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/gpa_semester"
-            android:textColor="@color/colorText"
-            android:textStyle="bold" />
+            android:textAppearance="@style/TextAppearance.RUSLearn.Label"
+            android:textColor="@color/colorInk" />
 
         <Spinner
             android:id="@+id/spSemester"
@@ -162,8 +169,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:textColor="@color/colorAccent"
-            android:textSize="14sp"
+            android:textAppearance="@style/TextAppearance.RUSLearn.Code"
+            android:textColor="@color/colorFaculty"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -171,8 +178,8 @@
         android:id="@+id/lvSubjects"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:divider="#00000000"
-        android:dividerHeight="0dp"
+        android:divider="@color/colorHairline"
+        android:dividerHeight="1dp"
         app:layout_constraintBottom_toTopOf="@id/btnSaveGrades"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -183,11 +190,13 @@
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_margin="16dp"
-        android:backgroundTint="@color/colorPrimary"
         android:text="@string/gpa_save"
-        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include layout="@layout/view_bottom_nav" />
+</LinearLayout>
+

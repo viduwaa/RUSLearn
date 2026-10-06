@@ -35,7 +35,7 @@ import java.util.Map;
  * future grades without saving is the prediction. Saving persists the current
  * semester's grades on a (user, programme, subject) key.
  */
-public class GpaCalculatorActivity extends AppCompatActivity {
+public class GpaCalculatorActivity extends ToolbarActivity {
 
     private final List<Subject> semesterSubjects = new ArrayList<>();
     private final Map<String, String> currentGrades = new HashMap<>();
@@ -70,7 +70,8 @@ public class GpaCalculatorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gpa);
-        setTitle(getString(R.string.gpa_title));
+        bindToolbar(R.string.gpa_title, false);
+        new TopLevelNav(this, null).attach(R.id.nav_gpa);
 
         session = new SessionManager(this);
         if (!session.isSignedIn()) {

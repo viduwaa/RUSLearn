@@ -34,7 +34,7 @@ import java.util.Map;
  * FR11 total. Tracking statuses and GPA grades are separate records — this screen is
  * the progress plan, the calculator is the results.
  */
-public class SubjectTrackingActivity extends AppCompatActivity {
+public class SubjectTrackingActivity extends ToolbarActivity {
 
     private static final List<String> STATUS_OPTIONS =
             List.of("None", "Completed", "Current", "Upcoming");
@@ -67,7 +67,8 @@ public class SubjectTrackingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tracking);
-        setTitle(getString(R.string.tracking_title));
+        bindToolbar(R.string.tracking_title, false);
+        new TopLevelNav(this, null).attach(R.id.nav_tracking);
 
         session = new SessionManager(this);
         if (!session.isSignedIn()) {

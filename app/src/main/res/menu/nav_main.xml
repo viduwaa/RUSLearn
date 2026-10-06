@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The four top-level destinations (ticket 02b). Second ring lives in the
+     Home settings sheet, not here. -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home"
+        android:title="@string/nav_home" />
+    <item
+        android:id="@+id/nav_papers"
+        android:icon="@drawable/ic_papers"
+        android:title="@string/nav_papers" />
+    <item
+        android:id="@+id/nav_gpa"
+        android:icon="@drawable/ic_gpa"
+        android:title="@string/nav_gpa" />
+    <item
+        android:id="@+id/nav_tracking"
+        android:icon="@drawable/ic_tracking"
+        android:title="@string/nav_tracking" />
+</menu>

@@ -27,7 +27,24 @@
     <string name="papers_empty_no_results">No papers found matching the filters.</string>
     <string name="papers_error_network">Couldn\'t reach the portal. Check your connection and try again.</string>
     <string name="paper_meta_format">%1$s · %2$s · %3$s · %4$s</string>
+    <string name="papers_count_format">%1$d papers</string>
+    <string name="filter_study_year">Study year</string>
+    <string name="filter_semester">Semester</string>
+    <string name="filter_department">Department</string>
+    <string name="filter_exam_year">Past-paper year</string>
     <string name="content_favourite_star">Favourite indicator</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_papers">Papers</string>
+    <string name="nav_gpa">GPA</string>
+    <string name="nav_tracking">Tracking</string>
+    <string name="settings_title">Settings</string>
+    <string name="settings_favourites">Favourites</string>
+    <string name="settings_offline">Offline papers</string>
+    <string name="settings_request">Request a paper</string>
+    <string name="settings_developer">Developer details</string>
+    <string name="settings_sign_out">Sign out</string>
+    <string name="action_close">Close</string>
+    <string name="developer_details_format">RUSLearn v%1$s\nFOT Academic Companion — Rajarata University\nICT 3219 group project · past-paper portal client\nLocal data stays on this device (ADR-0002).</string>
 
     <string name="favourites_title">Favourites</string>
     <string name="favourites_empty">Nothing saved yet. Open a paper and tap Save to favourites.</string>

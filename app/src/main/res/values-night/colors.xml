@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Paper & Ink — night ("Ink") palette. Same token names as values/colors.xml -->
+    <color name="colorPaper">#0E1A1D</color>
+    <color name="colorCard">#152528</color>
+    <color name="colorHairline">#24383C</color>
+    <color name="colorInk">#F2EDE3</color>
+    <color name="colorInkMuted">#9DB4B8</color>
+    <color name="colorFaculty">#5EEAD4</color>
+    <color name="colorOnFaculty">#062F2C</color>
+    <color name="colorFacultyContainer">#0B4A44</color>
+    <color name="colorStampGreen">#4ADE80</color>
+    <color name="colorStampAmber">#FBBF24</color>
+    <color name="colorStampBlue">#93C5FD</color>
+    <color name="colorStampRed">#F87171</color>
+    <color name="colorError">#F87171</color>
+</resources>

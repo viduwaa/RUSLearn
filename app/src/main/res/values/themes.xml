@@ -1,8 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Paper & Ink theme (spec §3.4). M3 colour slots wired to the faculty palette so
+         default widgets render teal/ink without per-instance backgroundTint patches.
+         Dark mode needs no separate theme: values-night/ flips every token. -->
     <style name="Theme.RUSLearn" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorSecondary">@color/colorAccent</item>
-        <item name="android:windowBackground">@color/colorBackground</item>
+        <!-- Colour slots -->
+        <item name="colorPrimary">@color/colorFaculty</item>
+        <item name="colorOnPrimary">@color/colorOnFaculty</item>
+        <item name="colorPrimaryContainer">@color/colorFacultyContainer</item>
+        <item name="colorOnPrimaryContainer">@color/colorFaculty</item>
+        <item name="colorSecondary">@color/colorFaculty</item>
+        <item name="colorOnSecondary">@color/colorOnFaculty</item>
+        <item name="colorSecondaryContainer">@color/colorFacultyContainer</item>
+        <item name="colorOnSecondaryContainer">@color/colorFaculty</item>
+        <item name="colorSurface">@color/colorCard</item>
+        <item name="colorOnSurface">@color/colorInk</item>
+        <item name="colorOnSurfaceVariant">@color/colorInkMuted</item>
+        <item name="android:colorBackground">@color/colorPaper</item>
+        <item name="colorError">@color/colorError</item>
+        <item name="colorOutline">@color/colorHairline</item>
+        <item name="colorOutlineVariant">@color/colorHairline</item>
+
+        <!-- Window + status bar -->
+        <item name="android:windowBackground">@color/colorPaper</item>
+        <item name="android:statusBarColor">@color/colorPaper</item>
+        <item name="android:windowLightStatusBar">true</item>
+
+        <!-- Type defaults -->
+        <item name="android:textAppearance">@style/TextAppearance.RUSLearn.Body</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.RUSLearn.Title</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.RUSLearn.Body</item>
+        <item name="textAppearanceLabelMedium">@style/TextAppearance.RUSLearn.Label</item>
+
+        <!-- Component defaults -->
+        <item name="materialCardViewStyle">@style/Card.RUSLearn</item>
+        <item name="materialButtonStyle">@style/Button.RUSLearn.Filled</item>
+        <item name="chipStyle">@style/Chip.RUSLearn</item>
     </style>
 </resources>

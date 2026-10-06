@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -49,7 +48,7 @@ public class DashboardActivity extends AppCompatActivity {
             return;
         }
 
-        renderSessionCard();
+        new TopLevelNav(this, this::signOut).attach(R.id.nav_home);
 
         bindShortcut(R.id.btnBrowsePapers, PapersActivity.class);
         bindShortcut(R.id.btnFavourites, FavouritesActivity.class);
@@ -57,9 +56,6 @@ public class DashboardActivity extends AppCompatActivity {
         bindShortcut(R.id.btnRequest, PaperRequestActivity.class);
         bindShortcut(R.id.btnGpa, GpaCalculatorActivity.class);
         bindShortcut(R.id.btnTracking, SubjectTrackingActivity.class);
-
-        Button signOut = findViewById(R.id.btnSignOut);
-        signOut.setOnClickListener(v -> signOut());
 
         refreshData();
     }
@@ -81,8 +77,7 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void bindShortcut(int buttonId, Class<?> target) {
-        Button button = findViewById(buttonId);
-        button.setOnClickListener(v ->
+        findViewById(buttonId).setOnClickListener(v ->
                 startActivity(new Intent(this, target)));
     }
 

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Bottom-nav item tint: faculty when active, muted ink otherwise (both modes
+     via the night palette). -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/colorFaculty" android:state_checked="true" />
+    <item android:color="@color/colorInkMuted" />
+</selector>

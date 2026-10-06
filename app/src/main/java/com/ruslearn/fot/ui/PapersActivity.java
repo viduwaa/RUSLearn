@@ -37,11 +37,12 @@ import java.util.Set;
  * parameter, so the Past-Paper Year filter is applied locally, mirroring the
  * portal web app's behaviour.
  */
-public class PapersActivity extends AppCompatActivity {
+public class PapersActivity extends ToolbarActivity {
 
     private static final String ALL = "All";
 
     private final List<Paper> currentPapers = new ArrayList<>();
+    private TopLevelNav topLevelNav;
 
     private ArrayAdapter<String> studyYearAdapter;
     private ArrayAdapter<String> semesterAdapter;
@@ -56,6 +57,7 @@ public class PapersActivity extends AppCompatActivity {
     private EditText etSearch;
     private ProgressBar loading;
     private TextView tvEmpty;
+    private TextView tvResultCount;
 
     private FilterPrefs filterPrefs;
     private boolean suppressingSelectionEvents = true;
@@ -64,7 +66,10 @@ public class PapersActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_papers);
-        setTitle(getString(R.string.papers_title));
+        bindToolbar(R.string.papers_title, false);
+
+        topLevelNav = new TopLevelNav(this, null);
+        topLevelNav.attach(R.id.nav_papers);
 
         filterPrefs = new FilterPrefs(this);
 
@@ -101,6 +106,7 @@ public class PapersActivity extends AppCompatActivity {
 
         loading = findViewById(R.id.loading);
         tvEmpty = findViewById(R.id.tvEmpty);
+        tvResultCount = findViewById(R.id.tvResultCount);
 
         ListView lvPapers = findViewById(R.id.lvPapers);
         paperAdapter = new PaperAdapter(this, currentPapers);
@@ -277,6 +283,11 @@ public class PapersActivity extends AppCompatActivity {
     private void showEmpty(boolean visible, int messageResId) {
         tvEmpty.setText(messageResId);
         tvEmpty.setVisibility(visible ? View.VISIBLE : View.GONE);
+        if (visible) {
+            tvResultCount.setText("");
+        } else {
+            tvResultCount.setText(getString(R.string.papers_count_format, currentPapers.size()));
+        }
     }
 
     private void showToast(String message) {

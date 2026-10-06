@@ -23,7 +23,7 @@ import java.io.File;
  * Papers open through the device browser/Drive viewer, where the student's
  * university session can grant access to domain-restricted files.
  */
-public class PaperDetailActivity extends AppCompatActivity {
+public class PaperDetailActivity extends ToolbarActivity {
 
     public static final String EXTRA_PAPER = "paper";
 
@@ -47,12 +47,11 @@ public class PaperDetailActivity extends AppCompatActivity {
             finish();
             return;
         }
+        bindToolbar(getString(R.string.detail_title_format, paper.getCourseCode()), true);
         db = new DatabaseHelper(this);
         String driveId = paper.getDriveFileId();
         isFavourite = driveId != null && db.isFavourite(driveId);
         isOffline = driveId != null && db.isOffline(driveId);
-
-        setTitle(getString(R.string.detail_title_format, paper.getCourseCode()));
 
         TextView tvCode = findViewById(R.id.tvDetailCode);
         TextView tvName = findViewById(R.id.tvDetailName);

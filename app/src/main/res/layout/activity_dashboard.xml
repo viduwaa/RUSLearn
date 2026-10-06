@@ -1,239 +1,232 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
-    android:fillViewport="true">
+    android:background="@color/colorPaper"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="24dp">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:padding="24dp">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/tvUserName"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tvUserEmail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorTextMuted"
-                    android:textSize="12sp" />
+                    <TextView
+                        android:id="@+id/tvUserName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.RUSLearn.Title"
+                        android:textColor="@color/colorInk" />
+
+                    <TextView
+                        android:id="@+id/tvUserEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.RUSLearn.Code"
+                        android:textColor="@color/colorInkMuted" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/btnSettings"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/settings_title"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_settings"
+                    app:tint="@color/colorInkMuted" />
             </LinearLayout>
 
-            <Button
-                android:id="@+id/btnSignOut"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:backgroundTint="@color/colorSurface"
-                android:minWidth="0dp"
-                android:text="@string/dashboard_logout"
-                android:textColor="@color/colorPrimary"
-                android:textSize="13sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@color/colorSurface"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/dashboard_snapshot_heading"
-                android:textColor="@color/colorTextMuted"
-                android:textSize="11sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvDashGpa"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorText"
-                android:textSize="34sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvDashBand"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorTextMuted"
-                android:textSize="13sp" />
-
-            <TextView
-                android:id="@+id/tvDashCredits"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:textColor="@color/colorText"
-                android:textSize="13sp" />
-
-            <ProgressBar
-                android:id="@+id/pbDash"
-                style="?android:attr/progressBarStyleHorizontal"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="12dp"
-                android:max="120"
-                android:progressTint="@color/colorAccent"
-                android:secondaryProgressTint="@color/colorBorder" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_card"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dashboard_snapshot_heading"
+                    android:textAppearance="@style/TextAppearance.RUSLearn.Label"
+                    android:textColor="@color/colorInkMuted" />
+
+                <TextView
+                    android:id="@+id/tvDashGpa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.RUSLearn.Display"
+                    android:textColor="@color/colorInk" />
+
+                <TextView
+                    android:id="@+id/tvDashBand"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.RUSLearn.Code"
+                    android:textColor="@color/colorInkMuted" />
+
+                <TextView
+                    android:id="@+id/tvDashCredits"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:textAppearance="@style/TextAppearance.RUSLearn.Code"
+                    android:textColor="@color/colorInk" />
+
+                <ProgressBar
+                    android:id="@+id/pbDash"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp"
+                    android:max="120"
+                    android:progressTint="@color/colorFaculty"
+                    android:secondaryProgressTint="@color/colorHairline" />
+
+                <TextView
+                    android:id="@+id/tvDashSemesterGpas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:textAppearance="@style/TextAppearance.RUSLearn.Code"
+                    android:textColor="@color/colorInkMuted" />
+
+                <TextView
+                    android:id="@+id/tvDashCurrent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textAppearance="@style/TextAppearance.RUSLearn.Code"
+                    android:textColor="@color/colorFaculty"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvDashNoData"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/dashboard_no_data"
+                    android:textAppearance="@style/TextAppearance.RUSLearn.Body"
+                    android:textColor="@color/colorInkMuted"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnBrowsePapers"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:text="@string/papers_title" />
+
+                <Button
+                    android:id="@+id/btnFavourites"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_weight="1"
+                    android:text="@string/dashboard_favourites" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnOffline"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:text="@string/dashboard_offline" />
+
+                <Button
+                    android:id="@+id/btnRequest"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_weight="1"
+                    android:text="@string/dashboard_request" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnGpa"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:text="@string/dashboard_gpa" />
+
+                <Button
+                    android:id="@+id/btnTracking"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_weight="1"
+                    android:text="@string/dashboard_tracking" />
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/tvDashSemesterGpas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:textColor="@color/colorTextMuted"
-                android:textSize="12sp" />
+                android:layout_marginTop="24dp"
+                android:text="@string/dashboard_recent_heading"
+                android:textAppearance="@style/TextAppearance.RUSLearn.Title"
+                android:textColor="@color/colorInk" />
 
             <TextView
-                android:id="@+id/tvDashCurrent"
+                android:id="@+id/tvNoSaved"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textColor="@color/colorAccent"
-                android:textSize="13sp"
-                android:visibility="gone" />
+                android:text="@string/dashboard_no_saved"
+                android:textAppearance="@style/TextAppearance.RUSLearn.Body"
+                android:textColor="@color/colorInkMuted" />
 
-            <TextView
-                android:id="@+id/tvDashNoData"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/llRecent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="@string/dashboard_no_data"
-                android:textColor="@color/colorTextMuted"
-                android:textSize="12sp"
-                android:visibility="gone" />
+                android:orientation="vertical" />
         </LinearLayout>
+    </ScrollView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:baselineAligned="false"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btnBrowsePapers"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/colorSurface"
-                android:text="@string/papers_title"
-                android:textColor="@color/colorPrimary" />
-
-            <Button
-                android:id="@+id/btnFavourites"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/colorSurface"
-                android:text="@string/dashboard_favourites"
-                android:textColor="@color/colorPrimary" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:baselineAligned="false"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btnOffline"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/colorSurface"
-                android:text="@string/dashboard_offline"
-                android:textColor="@color/colorPrimary" />
-
-            <Button
-                android:id="@+id/btnRequest"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/colorAccent"
-                android:text="@string/dashboard_request"
-                android:textColor="@android:color/white" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:baselineAligned="false"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btnGpa"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/colorPrimary"
-                android:text="@string/dashboard_gpa"
-                android:textColor="@android:color/white" />
-
-            <Button
-                android:id="@+id/btnTracking"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/colorPrimary"
-                android:text="@string/dashboard_tracking"
-                android:textColor="@android:color/white" />
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="@string/dashboard_recent_heading"
-            android:textColor="@color/colorPrimary"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvNoSaved"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/dashboard_no_saved"
-            android:textColor="@color/colorTextMuted"
-            android:textSize="12sp" />
-
-        <LinearLayout
-            android:id="@+id/llRecent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="vertical" />
-    </LinearLayout>
-</ScrollView>
+    <include layout="@layout/view_bottom_nav" />
+</LinearLayout>

@@ -23,7 +23,7 @@ import java.util.Set;
  * Saved papers (FR06). Tap opens the paper's detail screen; long-press removes
  * after a confirm dialog (the Practical-05 interaction pattern).
  */
-public class FavouritesActivity extends AppCompatActivity {
+public class FavouritesActivity extends ToolbarActivity {
 
     private final List<Paper> favourites = new ArrayList<>();
     private PaperAdapter adapter;
@@ -33,7 +33,7 @@ public class FavouritesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourites);
-        setTitle(getString(R.string.favourites_title));
+        bindToolbar(R.string.favourites_title, true);
 
         tvEmpty = findViewById(R.id.tvFavouritesEmpty);
 

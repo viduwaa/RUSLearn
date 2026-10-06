@@ -1,18 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorBackground">#F8FAFC</color>
-    <color name="colorSurface">#FFFFFF</color>
-    <color name="colorPrimary">#0F172A</color>
-    <color name="colorPrimaryDark">#0B1220</color>
-    <color name="colorAccent">#0D9488</color>
-    <color name="colorText">#0F172A</color>
-    <color name="colorTextMuted">#64748B</color>
-    <color name="colorBorder">#E2E8F0</color>
+    <!-- Paper & Ink — light ("Paper") palette. Night twin: values-night/colors.xml -->
 
-    <color name="colorError">#DC2626</color>
-    <color name="colorGpaGreen">#16A34A</color>
-    <color name="colorGpaBlue">#2563EB</color>
-    <color name="colorGpaCyan">#0891B2</color>
-    <color name="colorGpaYellow">#CA8A04</color>
-    <color name="colorGpaRed">#DC2626</color>
+    <!-- Surfaces -->
+    <color name="colorPaper">#FAF7F0</color>
+    <color name="colorCard">#FFFFFF</color>
+    <color name="colorHairline">#E4DFD3</color>
+
+    <!-- Ink (text) -->
+    <color name="colorInk">#14282E</color>
+    <color name="colorInkMuted">#5D6B70</color>
+
+    <!-- Faculty teal — the one interactive colour -->
+    <color name="colorFaculty">#0F766E</color>
+    <color name="colorOnFaculty">#FFFFFF</color>
+    <color name="colorFacultyContainer">#CCE8E4</color>
+
+    <!-- Stamp colours — grade bands, statuses, errors (meaning, not decoration) -->
+    <color name="colorStampGreen">#15803D</color>
+    <color name="colorStampAmber">#B45309</color>
+    <color name="colorStampBlue">#1D4ED8</color>
+    <color name="colorStampRed">#B91C1C</color>
+    <color name="colorError">#B91C1C</color>
+
+    <!-- Legacy aliases — retire as the screen tickets re-skin each layout -->
+    <color name="colorBackground">@color/colorPaper</color>
+    <color name="colorSurface">@color/colorCard</color>
+    <color name="colorPrimary">@color/colorFaculty</color>
+    <color name="colorPrimaryDark">#0B1220</color>
+    <color name="colorAccent">@color/colorFaculty</color>
+    <color name="colorText">@color/colorInk</color>
+    <color name="colorTextMuted">@color/colorInkMuted</color>
+    <color name="colorBorder">@color/colorHairline</color>
+    <color name="colorGpaGreen">@color/colorStampGreen</color>
 </resources>

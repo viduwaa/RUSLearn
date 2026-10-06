@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground">
+    android:background="@color/colorPaper"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/colorPaper">
+
+    <include android:id="@+id/toolbarInclude" layout="@layout/view_toolbar" />
 
     <LinearLayout
         android:id="@+id/programRow"
@@ -16,14 +25,14 @@
         android:paddingTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/toolbarInclude">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/gpa_program"
-            android:textColor="@color/colorText"
-            android:textStyle="bold" />
+            android:textAppearance="@style/TextAppearance.RUSLearn.Label"
+            android:textColor="@color/colorInk" />
 
         <Spinner
             android:id="@+id/spProgram"
@@ -40,7 +49,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
-        android:background="@color/colorSurface"
+        android:background="@drawable/bg_card"
         android:orientation="vertical"
         android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,9 +60,8 @@
             android:id="@+id/tvCompletedCredits"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorText"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textAppearance="@style/TextAppearance.RUSLearn.Title"
+            android:textColor="@color/colorInk" />
 
         <ProgressBar
             android:id="@+id/pbTracking"
@@ -62,16 +70,16 @@
             android:layout_height="12dp"
             android:layout_marginTop="8dp"
             android:max="120"
-            android:progressTint="@color/colorAccent"
-            android:secondaryProgressTint="@color/colorBorder" />
+            android:progressTint="@color/colorFaculty"
+            android:secondaryProgressTint="@color/colorHairline" />
 
         <TextView
             android:id="@+id/tvCurrentlyTaking"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textColor="@color/colorTextMuted"
-            android:textSize="13sp" />
+            android:textAppearance="@style/TextAppearance.RUSLearn.Body"
+            android:textColor="@color/colorInkMuted" />
     </LinearLayout>
 
     <LinearLayout
@@ -91,8 +99,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/gpa_semester"
-            android:textColor="@color/colorText"
-            android:textStyle="bold" />
+            android:textAppearance="@style/TextAppearance.RUSLearn.Label"
+            android:textColor="@color/colorInk" />
 
         <Spinner
             android:id="@+id/spSemester"
@@ -106,11 +114,15 @@
         android:id="@+id/lvSubjects"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:divider="#00000000"
-        android:dividerHeight="0dp"
+        android:divider="@color/colorHairline"
+        android:dividerHeight="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/semesterRow" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include layout="@layout/view_bottom_nav" />
+</LinearLayout>
+

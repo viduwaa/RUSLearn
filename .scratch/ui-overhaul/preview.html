@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en" data-skin="paper">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>“Paper &amp; Ink” — RUSLearn design system preview</title>
+<!--
+  Paper & Ink — design system preview (mockup only, no Android files touched)
+  Mirrors .scratch/ui-overhaul/spec.md §3 tokens 1:1:
+  colour values, IBM Plex type roles, 16dp card radius, hairline strokes,
+  4/8/12/16/24 spacing rhythm, band stamps. If a value changes here,
+  change it in values/colors.xml + themes.xml — and vice versa.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS — the single source this mockup demonstrates ============ */
+:root{
+  /* Paper (light) skin — matches spec §3.2 */
+  --paper:#FAF7F0;         /* window background, warm cream            */
+  --card:#FFFFFF;          /* card surfaces                            */
+  --ink:#14282E;           /* primary text, deep teal-black            */
+  --ink-muted:#5D6B70;     /* secondary text (≥4.5:1 on paper)         */
+  --hairline:#E4DFD3;      /* 1px card strokes, dividers               */
+  --faculty:#0F766E;       /* THE accent — teal-700                    */
+  --on-faculty:#FFFFFF;    /* text on faculty fill                     */
+  --faculty-soft:#CCE8E4;  /* faculty container — chips, selected      */
+  --faculty-faint:rgba(15,118,110,.07);
+  --stamp-green:#15803D;   /* First Class · Pass · Completed           */
+  --stamp-amber:#B45309;   /* Second Upper * · Current                 */
+  --stamp-blue:#1D4ED8;    /* Second Lower · info                      */
+  --stamp-red:#B91C1C;     /* error · Not Eligible · Fail              */
+  --shadow:0 1px 2px rgba(20,40,46,.05),0 10px 28px rgba(20,40,46,.07);
+  --shadow-pressed:0 1px 3px rgba(20,40,46,.12);
+  --r-card:16px; --r-btn:12px; --r-chip:999px;
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px;
+  --serif:"IBM Plex Serif",Georgia,serif;
+  --sans:"IBM Plex Sans",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --grain:0.35;
+}
+/* Ink (dark) skin — flips via [data-skin=ink]; Android twin = values-night/colors.xml */
+html[data-skin="ink"]{
+  --paper:#0E1A1D;
+  --card:#152528;
+  --ink:#F2EDE3;
+  --ink-muted:#9DB4B8;
+  --hairline:#24383C;
+  --faculty:#5EEAD4;
+  --on-faculty:#062F2C;
+  --faculty-soft:#0B4A44;
+  --faculty-faint:rgba(94,234,212,.08);
+  --stamp-green:#4ADE80;
+  --stamp-amber:#FBBF24;
+  --stamp-blue:#93C5FD;
+  --stamp-red:#F87171;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px rgba(0,0,0,.35);
+  --grain:0.08;
+}
+/* ============ CANVAS (this page, not the app) ============ */
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans);background:var(--paper);color:var(--ink);
+  min-height:100vh;transition:background .35s,color .35s;
+}
+body::before{ /* paper grain — the archive feel */
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  opacity:var(--grain);mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+}
+html[data-skin="ink"] body::before{mix-blend-mode:screen}
+@media (max-width:820px){
+  .phone{width:100%}
+}
+@media (max-width:400px){
+  .bnlabel{display:none}
+}
+a{color:var(--faculty)}
+/* ============ PAGE LAYOUT ============ */
+.page{position:relative;z-index:1;display:grid;grid-template-columns:236px 1fr;min-height:100vh}
+aside{
+  position:sticky;top:0;height:100vh;padding:var(--s5) var(--s4);
+  border-right:1px solid var(--hairline);display:flex;flex-direction:column;gap:var(--s5);
+  background:color-mix(in srgb,var(--card) 55%,transparent);backdrop-filter:blur(6px);
+}
+.logo{font-family:var(--serif);font-weight:700;font-size:24px;letter-spacing:-.01em;line-height:1.1}
+.logo small{display:block;font-family:var(--mono);font-weight:500;font-size:10px;color:var(--ink-muted);letter-spacing:.14em;text-transform:uppercase;margin-top:var(--s1)}
+.inkline{width:44px;height:3px;background:var(--faculty);border-radius:2px;margin-top:var(--s3)}
+nav{display:flex;flex-direction:column;gap:2px}
+nav .navhead{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);margin:var(--s3) 0 var(--s2)}
+nav a{font-size:13px;text-decoration:none;color:var(--ink-muted);padding:6px 10px;border-radius:8px;font-weight:500;transition:.15s}
+nav a:hover{color:var(--ink);background:var(--faculty-faint)}
+nav a b{color:var(--faculty);font-family:var(--mono);font-weight:500;font-size:11px;margin-right:8px}
+.skinbox{margin-top:auto;border:1px solid var(--hairline);border-radius:12px;padding:var(--s3);background:var(--card);box-shadow:var(--shadow)}
+.skinbox p{font-size:11px;color:var(--ink-muted);line-height:1.5;margin-bottom:var(--s2)}
+.toggle{display:flex;border:1px solid var(--hairline);border-radius:10px;overflow:hidden}
+.toggle button{
+  flex:1;border:0;background:transparent;color:var(--ink-muted);font:500 12px var(--sans);
+  padding:8px 0;cursor:pointer;transition:.2s;
+}
+.toggle button.on{background:var(--faculty);color:var(--on-faculty)}
+main{padding:var(--s6) var(--s6) 120px;max-width:1240px}
+/* Page sections */
+.section{margin-bottom:72px;scroll-margin-top:24px}
+.kicker{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--faculty);display:flex;align-items:center;gap:10px}
+.kicker::after{content:"";height:1px;flex:1;background:var(--hairline)}
+h1{font-family:var(--serif);font-size:44px;font-weight:700;letter-spacing:-.02em;line-height:1.05;margin:var(--s3) 0 var(--s3)}
+h1 em{font-style:italic;color:var(--faculty)}
+.lede{font-size:15px;line-height:1.65;color:var(--ink-muted);max-width:620px}
+h2{font-family:var(--serif);font-size:26px;font-weight:600;letter-spacing:-.01em;margin:var(--s4) 0 var(--s2)}
+.note{font-size:13px;color:var(--ink-muted);line-height:1.6;max-width:640px}
+/* Hero masthead */
+.masthead{display:grid;grid-template-columns:1.25fr .75fr;gap:var(--s6);align-items:end;margin-bottom:var(--s6)}
+.mast-meta{border-left:2px solid var(--faculty);padding-left:var(--s4);display:grid;gap:10px}
+.mast-meta div{font-family:var(--mono);font-size:12px;color:var(--ink-muted)}
+.mast-meta b{display:block;color:var(--ink);font-family:var(--sans);font-weight:600;font-size:13px}
+/* ============ TOKENS SECTION ============ */
+.swatchgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:var(--s3);margin-top:var(--s4)}
+.swatch{border:1px solid var(--hairline);border-radius:12px;overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.swatch .chip{height:64px;border-bottom:1px solid var(--hairline);position:relative}
+.swatch .chip::after{content:attr(data-token);position:absolute;left:10px;top:10px;font:500 9px var(--mono);letter-spacing:.08em;padding:2px 7px;border-radius:999px;background:rgba(255,255,255,.82);color:#14282E}
+.swatch .info{padding:10px 12px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.swatch .info b{font-size:12.5px;font-weight:600}
+.swatch .info code{font-family:var(--mono);font-size:10.5px;color:var(--ink-muted)}
+.swatchgrid .swatch.solid .chip::after{display:none}
+.typemap{display:grid;grid-template-columns:1fr 1fr;gap:var(--s3);margin-top:var(--s4)}
+.typecard{border:1px solid var(--hairline);border-radius:16px;background:var(--card);padding:var(--s4) var(--s5);box-shadow:var(--shadow)}
+.typecard .role{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--faculty);margin-bottom:8px}
+.typecard .sample{line-height:1.2;letter-spacing:-.01em}
+.t-display{font:600 34px/1.05 var(--serif)}
+.t-title{font:600 22px/1.15 var(--serif)}
+.t-body{font:400 14px/1.55 var(--sans)}
+.t-label{font:500 11px/1.4 var(--sans);letter-spacing:.02em;color:var(--ink-muted)}
+.t-code{font:500 12px/1.5 var(--mono)}
+/* ============ PHONE STAGE ============ */
+.stage{display:grid;grid-template-columns:repeat(auto-fit,minmax(375px,1fr));gap:var(--s5);margin-top:var(--s5);align-items:start}
+.phonewrap{display:flex;flex-direction:column;gap:var(--s3)}
+.phonelabel{display:flex;justify-content:space-between;align-items:baseline}
+.phonelabel h3{font-family:var(--serif);font-size:17px;font-weight:600}
+.phonelabel span{font-family:var(--mono);font-size:10.5px;color:var(--ink-muted)}
+.phone{width:375px;max-width:100%;height:712px;background:var(--paper);
+  border:1px solid var(--hairline);border-radius:34px;box-shadow:var(--shadow);
+  overflow:hidden;position:relative;display:flex;flex-direction:column;
+}
+/* Per-phone ink skin — same cascade trick Android's values-night/ uses */
+.phone[data-skin="ink"]{--paper:#0E1A1D;--card:#152528;--ink:#F2EDE3;--ink-muted:#9DB4B8;
+  --hairline:#24383C;--faculty:#5EEAD4;--on-faculty:#062F2C;--faculty-soft:#0B4A44;
+  --faculty-faint:rgba(94,234,212,.08);--stamp-green:#4ADE80;--stamp-amber:#FBBF24;
+  --stamp-blue:#93C5FD;--stamp-red:#F87171;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px rgba(0,0,0,.35);
+  --grain:0;
+}
+.phone::before{content:"";position:absolute;top:10px;left:50%;transform:translateX(-50%);width:96px;height:22px;background:var(--paper);border:1px solid var(--hairline);border-radius:14px;z-index:40}
+/* Status bar + toolbar (the Android include twin) */
+.statusbar{display:flex;justify-content:space-between;padding:14px 22px 4px;font:500 10.5px var(--mono);color:var(--ink-muted)}
+.appbar{display:flex;align-items:center;gap:var(--s3);padding:var(--s3) var(--s4);border-bottom:1px solid var(--hairline)}
+.appbar .back{font:500 16px var(--sans);color:var(--ink);width:32px;height:32px;display:grid;place-items:center;border-radius:10px;background:transparent;border:0;cursor:pointer}
+.appbar .back:hover{background:var(--faculty-faint)}
+.appbar h4{font:600 15px var(--serif);letter-spacing:-.01em;flex:1}
+.appbar .action{border:0;background:transparent;color:var(--ink-muted);font-size:14px;cursor:pointer;width:32px;height:32px;border-radius:10px}
+.appbar .action:hover{background:var(--faculty-faint);color:var(--faculty)}
+.phonebody{flex:1;overflow-y:auto;padding:var(--s4);scrollbar-width:thin}
+.phonebody::-webkit-scrollbar{width:4px}
+.phonebody::-webkit-scrollbar-thumb{background:var(--hairline);border-radius:4px}
+/* ============ APP COMPONENTS (each maps to a spec §3.5 row) ============ */
+.card{background:var(--card);border:1px solid var(--hairline);border-radius:16px;box-shadow:var(--shadow)}
+.hairline{height:1px;background:var(--hairline);border:0}
+/* Stamps — GradePoint.bandFor becomes a colour */
+.stamp{display:inline-flex;align-items:center;gap:5px;font:500 10px var(--mono);letter-spacing:.06em;padding:3px 9px;border-radius:999px;text-transform:uppercase}
+.stamp::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor}
+.st-green{background:color-mix(in srgb,var(--stamp-green) 13%,transparent);color:var(--stamp-green)}
+.st-teal{background:var(--faculty-soft);color:var(--faculty)}
+.st-blue{background:color-mix(in srgb,var(--stamp-blue) 12%,transparent);color:var(--stamp-blue)}
+.st-amber{background:color-mix(in srgb,var(--stamp-amber) 14%,transparent);color:var(--stamp-amber)}
+.st-red{background:color-mix(in srgb,var(--stamp-red) 11%,transparent);color:var(--stamp-red)}
+/* Code chip — mono record feel */
+.codechip{display:inline-block;font:500 11px var(--mono);letter-spacing:.03em;padding:3px 9px;border-radius:7px;background:var(--faculty-soft);color:var(--faculty)}
+html[data-skin="ink"] .codechip{background:color-mix(in srgb,var(--faculty) 14%,transparent)}
+/* Buttons — MaterialButton style twins */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;border-radius:12px;font:600 13.5px var(--sans);padding:0 var(--s4);border:0;cursor:pointer;transition:transform .12s,box-shadow .15s,background .15s;letter-spacing:.01em}
+.btn:active{transform:translateY(1px)}
+.btn.filled{background:var(--faculty);color:var(--on-faculty);box-shadow:0 2px 8px color-mix(in srgb,var(--faculty) 35%,transparent)}
+.btn.tonal{background:var(--faculty-soft);color:var(--faculty)}
+.btn.outline{background:transparent;border:1px solid var(--hairline);color:var(--ink)}
+.btn.text{background:transparent;color:var(--faculty);min-height:36px}
+.btn.block{width:100%}
+.btn[disabled]{opacity:.55;cursor:default;box-shadow:none}
+/* Exposed dropdown twin */
+.dropdown{border:1px solid var(--hairline);border-radius:12px;background:var(--card);padding:7px 12px;display:flex;flex-direction:column;gap:1px;position:relative}
+.dropdown label{font:500 9.5px var(--sans);letter-spacing:.05em;color:var(--faculty)}
+.dropdown span{font:500 13px var(--sans)}
+.dropdown::after{content:"▾";position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--ink-muted);font-size:11px}
+/* Filter chips */
+.chips{display:flex;flex-wrap:wrap;gap:var(--s2)}
+.fchip{display:inline-flex;align-items:center;gap:6px;font:500 11.5px var(--sans);padding:6px 12px;border-radius:999px;border:1px solid var(--faculty);color:var(--faculty);background:var(--faculty-faint)}
+.fchip i{font-style:normal;opacity:.7;cursor:pointer}
+.fchip.clear{border-style:dashed;border-color:var(--hairline);color:var(--ink-muted);background:transparent}
+/* Paper row — item_paper.xml v2 */
+.prow{display:flex;align-items:center;gap:var(--s3);padding:var(--s3) var(--s4);border-bottom:1px solid var(--hairline);cursor:pointer;transition:background .15s}
+.prow:hover{background:var(--faculty-faint)}
+.prow:last-child{border-bottom:0}
+.prow .info{flex:1;min-width:0;display:grid;gap:3px}
+.prow .name{font:500 14px var(--sans);letter-spacing:-.005em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prow .meta{font:400 10.5px var(--mono);color:var(--ink-muted)}
+.star{border:0;background:transparent;font-size:17px;color:var(--faculty);cursor:pointer;line-height:1}
+.star.hollow{color:var(--hairline)}
+/* Empty state twin */
+.empty{display:grid;justify-items:center;gap:var(--s2);padding:var(--s6) var(--s4);text-align:center}
+.empty .ring{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-size:20px;background:var(--faculty-soft);color:var(--faculty)}
+.empty b{font:600 13.5px var(--sans)}
+.empty p{font-size:12px;color:var(--ink-muted);line-height:1.5;max-width:240px}
+/* Motion: staggered entrance, the twin of UiMotion.fadeUp */
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.phone .rise{animation:rise .45s cubic-bezier(.2,.7,.3,1) backwards}
+.d1{animation-delay:.03s}.d2{animation-delay:.09s}.d3{animation-delay:.15s}.d4{animation-delay:.21s}.d5{animation-delay:.27s}.d6{animation-delay:.33s}
+@keyframes grow{from{width:0!important}}
+.bar-anim{animation:grow 1s .35s cubic-bezier(.25,.8,.3,1) backwards}
+@keyframes stampin{0%{opacity:0;transform:scale(.7)}70%{transform:scale(1.08)}100%{opacity:1;transform:scale(1)}}
+.stampin{animation:stampin .4s .5s cubic-bezier(.2,.7,.3,1) backwards}
+/* ============ DASHBOARD SCREEN ============ */
+.greet{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:var(--s4)}
+.greet .hi{font:600 21px/1.2 var(--serif);letter-spacing:-.01em}
+.greet .sub{font:400 10.5px var(--mono);color:var(--ink-muted);margin-top:3px}
+.gear{border:0;background:transparent;font-size:17px;color:var(--ink-muted);cursor:pointer;width:32px;height:32px;border-radius:10px;display:grid;place-items:center}
+.gear:hover{background:var(--faculty-faint);color:var(--faculty)}
+/* Settings sheet — the ⚙ dialog twin (plain AlertDialog on Android) */
+.sheet{display:grid;gap:2px;margin-top:var(--s2)}
+.sheet .sitem{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;font:500 13px var(--sans);color:var(--ink);cursor:pointer;border:1px solid transparent}
+.sheet .sitem:hover{background:var(--faculty-faint)}
+.sheet .sitem .sico{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;font-size:14px;background:var(--faculty-soft);color:var(--faculty);flex:none}
+.sheet .sitem.danger{color:var(--stamp-red)}
+.sheet .sitem.danger .sico{background:color-mix(in srgb,var(--stamp-red) 12%,transparent);color:var(--stamp-red)}
+.sheet .sitem small{display:block;font:400 10px var(--mono);color:var(--ink-muted);margin-top:1px}
+.hero{padding:var(--s4) var(--s4) var(--s3);display:grid;gap:10px}
+.hero .lab{font:500 9.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted)}
+.hero .gpa{display:flex;align-items:baseline;gap:10px}
+.hero .gpa b{font:600 46px/1 var(--serif);letter-spacing:-.03em}
+.hero .gpa small{font:400 12px var(--mono);color:var(--ink-muted)}
+.hero .bandrow{display:flex;align-items:center;gap:var(--s2)}
+.credits{display:grid;gap:6px;margin-top:2px}
+.credits .row{display:flex;justify-content:space-between;font:500 10.5px var(--mono)}
+.credits .row span:last-child{color:var(--ink-muted)}
+.bar{height:7px;border-radius:999px;background:var(--hairline);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:999px;background:var(--faculty);transition:width .3s}
+.semline{font:400 10.5px var(--mono);color:var(--ink-muted)}
+.nowchip{display:flex;align-items:center;gap:8px;font:500 11.5px var(--sans);color:var(--faculty);background:var(--faculty-faint);border-radius:10px;padding:8px 12px;margin-top:2px}
+.nowchip .dot{width:6px;height:6px;border-radius:50%;background:var(--faculty);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:var(--s2);margin-top:var(--s4)}
+.tile{display:flex;align-items:center;gap:11px;padding:13px var(--s3);cursor:pointer;transition:transform .15s,border-color .15s}
+.tile:hover{border-color:var(--faculty);transform:translateY(-1px)}
+.tile .ico{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-size:15px;background:var(--faculty-soft);color:var(--faculty);flex:none}
+.tile b{font:600 12.5px var(--sans);display:block}
+.tile small{font:400 9.5px var(--mono);color:var(--ink-muted)}
+.sechead{display:flex;justify-content:space-between;align-items:baseline;margin:var(--s5) 0 var(--s2)}
+.sechead h5{font:600 15px var(--serif)}
+.sechead a{font:500 11px var(--mono);text-decoration:none}
+.listcard{overflow:hidden}
+/* ============ PAPERS SCREEN ============ */
+.search{display:flex;align-items:center;gap:10px;border:1px solid var(--hairline);background:var(--card);border-radius:12px;padding:0 var(--s3);height:46px;box-shadow:var(--shadow)}
+.search:focus-within{border-color:var(--faculty);box-shadow:0 0 0 3px var(--faculty-faint)}
+.search input{flex:1;border:0;background:transparent;font:400 13.5px var(--sans);color:var(--ink);outline:none}
+.search input::placeholder{color:var(--ink-muted)}
+.search kbd{font:500 9px var(--mono);border:1px solid var(--hairline);border-radius:5px;padding:2px 5px;color:var(--ink-muted)}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s2);margin-top:var(--s3)}
+.countline{display:flex;justify-content:space-between;align-items:center;margin:var(--s4) 0 var(--s2)}
+.countline b{font:500 11px var(--mono);color:var(--ink-muted);letter-spacing:.04em}
+/* ============ DETAIL SCREEN ============ */
+.hero-detail{padding:var(--s4);display:grid;gap:10px}
+.hero-detail .dept{font:500 10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-muted)}
+.hero-detail h6{font:600 22px/1.2 var(--serif);letter-spacing:-.015em}
+.metagrid{margin-top:var(--s3);overflow:hidden}
+.metagrid .mrow{display:flex;justify-content:space-between;align-items:center;padding:11px var(--s4);border-bottom:1px solid var(--hairline)}
+.metagrid .mrow:last-child{border-bottom:0}
+.metagrid .k{font:500 12px var(--sans);color:var(--ink-muted)}
+.metagrid .v{font:500 12.5px var(--sans);display:flex;align-items:center;gap:8px}
+.metagrid .v.mono{font-family:var(--mono);font-size:12px}
+.offchip{display:flex;align-items:center;gap:9px;margin-top:var(--s3);padding:10px var(--s3);border-radius:12px;background:color-mix(in srgb,var(--stamp-green) 8%,transparent);border:1px dashed color-mix(in srgb,var(--stamp-green) 45%,transparent);font:500 11.5px var(--sans);color:var(--stamp-green)}
+.actions{display:grid;gap:var(--s2);margin-top:var(--s4)}
+/* ============ GPA & TRACKING SCREENS ============ */
+.statgrid{display:grid;grid-template-columns:1fr 1fr}
+.stat{padding:var(--s3) var(--s4);display:grid;gap:7px;align-content:start}
+.stat + .stat{border-left:1px solid var(--hairline)}
+.stat .lab{font:500 9.5px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-muted)}
+.stat .val{display:flex;align-items:baseline;gap:6px}
+.stat .val b{font:600 30px/1 var(--serif);letter-spacing:-.02em}
+.stat .val small{font:400 10px var(--mono);color:var(--ink-muted)}
+.delta{font:500 10px var(--mono)}
+.delta.up{color:var(--stamp-green)}
+.delta.down{color:var(--stamp-red)}
+.subrow{display:grid;gap:7px;padding:var(--s3) var(--s4);border-bottom:1px solid var(--hairline)}
+.subrow:last-child{border-bottom:0}
+.subrow .top{display:flex;align-items:center;gap:8px;min-width:0}
+.subrow .top .codechip{font-size:10px;padding:2px 7px;flex:none}
+.subrow .top .nm{flex:1;font:500 13.5px var(--sans);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.subrow .bot{display:flex;align-items:center;gap:8px}
+.subrow .bot .cr{font:400 10.5px var(--mono);color:var(--ink-muted)}
+.subrow .bot .ddown{margin-left:auto}
+.ddown{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 12px;border:1px solid var(--hairline);border-radius:10px;background:var(--faculty-faint);font:500 12px var(--sans);color:var(--faculty);cursor:pointer;transition:.15s}
+.ddown::after{content:"▾";font-size:10px;opacity:.7}
+.ddown:hover{border-color:var(--faculty)}
+/* ============ BOTTOM NAVIGATION — twin of view_bottom_nav.xml ============ */
+.bottomnav{display:flex;border-top:1px solid var(--hairline);background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:blur(8px);padding:6px 8px 10px}
+.bnitem{flex:1;display:grid;justify-items:center;gap:3px;padding:5px 0 3px;border:0;background:transparent;cursor:pointer;color:var(--ink-muted);font:500 9.5px var(--sans);letter-spacing:.03em;border-radius:12px;position:relative;transition:color .2s}
+.bnitem .bico{width:44px;height:30px;display:grid;place-items:center;border-radius:999px;font-size:15px;transition:background .2s,transform .2s}
+.bnitem.on{color:var(--faculty)}
+.bnitem.on .bico{background:var(--faculty-soft);transform:translateY(-1px)}
+.bnitem:not(.on):hover{color:var(--ink)}
+.badge{position:absolute;top:0;right:calc(50% - 22px);min-width:15px;height:15px;border-radius:999px;background:var(--stamp-red);color:#fff;font:600 8.5px var(--mono);display:grid;place-items:center;padding:0 4px}
+/* ============ COMPONENT STRIP ============ */
+.strip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--s3);margin-top:var(--s4)}
+.stripcard{padding:var(--s4);display:grid;gap:var(--s2);align-content:start}
+.stripcard h6{font:500 10px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted)}
+/* Before / After */
+.ba{display:grid;grid-template-columns:1fr 1fr;gap:var(--s3);margin-top:var(--s4)}
+.ba .before{border-radius:16px;border:1px solid #E2E8F0;background:#F8FAFC;padding:var(--s4);font-family:Arial,system-ui,sans-serif;color:#0F172A;box-shadow:none}
+.ba .before h6,.ba .after h6{font-size:11px;font-weight:700;margin-bottom:12px}
+.ba .before .brow{background:#fff;padding:10px;margin-bottom:6px;font-size:13px;color:#334155}
+.ba .before .bbtn{display:inline-block;background:#0F172A;color:#fff;font-size:12px;padding:8px 14px;border-radius:4px;margin:3px 3px 0 0}
+.ba .before .bbtn.t{background:#0D9488}
+.ba .after{border-radius:16px;border:1px solid var(--hairline);background:var(--card);padding:var(--s4);box-shadow:var(--shadow)}
+.ba .after .brow{display:flex;align-items:center;gap:10px;padding:10px;border-bottom:1px solid var(--hairline)}
+.ba .after .brow:last-of-type{border-bottom:0}
+.ba .after .bbtn{display:inline-flex;align-items:center;gap:6px;font:600 12px var(--sans);padding:8px 14px;border-radius:12px;background:var(--faculty);color:var(--on-faculty);margin:3px 3px 0 0}
+.ba .after .bbtn.t{background:var(--faculty-soft);color:var(--faculty)}
+.ba small.cap{display:block;margin-top:10px;font:400 11px var(--mono);color:var(--ink-muted)}
+/* Mapping footnote */
+.map{margin-top:var(--s4);border:1px dashed var(--hairline);border-radius:16px;padding:var(--s4) var(--s5);display:grid;gap:8px}
+.map div{font:400 12px var(--mono);color:var(--ink-muted)}
+.map b{color:var(--faculty);font-weight:500}
+@media (max-width:1020px){
+  .page{grid-template-columns:1fr}
+  aside{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;border-right:0;border-bottom:1px solid var(--hairline)}
+  .skinbox{margin:0}
+  main{padding:var(--s5) var(--s4) 80px}
+  .masthead,.typemap,.strip,.ba{grid-template-columns:1fr}
+  .stage{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ======================= SIDEBAR ======================= -->
+  <aside>
+    <div class="logo">Paper <em style="font-style:italic;color:var(--faculty)">&amp;</em> Ink
+      <small>RUSLearn · FOT design system</small>
+      <div class="inkline"></div>
+    </div>
+    <nav>
+      <div class="navhead">Preview</div>
+      <a href="#tokens"><b>01</b>Design tokens</a>
+      <a href="#dashboard"><b>02</b>Dashboard</a>
+      <a href="#papers"><b>03</b>Papers</a>
+      <a href="#detail"><b>04</b>Paper detail</a>
+      <a href="#gpa"><b>05</b>GPA &amp; Tracking</a>
+      <a href="#bottomnav"><b>06</b>Bottom navigation</a>
+      <div class="navhead">Appendix</div>
+      <a href="#components"><b>07</b>Components</a>
+      <a href="#beforeafter"><b>08</b>Before / After</a>
+      <a href="#mapping"><b>09</b>Android mapping</a>
+    </nav>
+    <div class="skinbox">
+      <p><b>Skin.</b> Same tokens, two times of day — the Android twin is <code>values-night/</code>.</p>
+      <div class="toggle">
+        <button id="btnPaper" class="on" onclick="setSkin('paper')">☀ Paper</button>
+        <button id="btnInk" onclick="setSkin('ink')">☾ Ink</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ======================= MAIN ======================= -->
+  <main>
+
+    <header class="section" style="margin-bottom:56px">
+      <div class="kicker">Mockup · evaluate before Android</div>
+      <div class="masthead">
+        <div>
+          <h1>The archive,<br>set in <em>Paper &amp; Ink</em>.</h1>
+          <p class="lede">A past-paper app should feel like a well-kept university archive: warm paper,
+          ink-dark type, one faculty-teal stamp colour, catalog codes in typewriter mono —
+          and grade bands as stamps. Everything below uses the exact tokens the Android
+          tickets will implement.</p>
+        </div>
+        <div class="mast-meta">
+          <div><b>Direction</b>archival-editorial · light-first</div>
+          <div><b>Type</b>IBM Plex Serif / Sans / Mono</div>
+          <div><b>Radius</b>16 cards · 12 buttons · 999 chips</div>
+          <div><b>Rhythm</b>4 / 8 / 12 / 16 / 24 / 32</div>
+          <div><b>A11y</b>≥48dp targets · ≥4.5:1 contrast, both skins</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ======================= 01 TOKENS ======================= -->
+    <section class="section" id="tokens">
+      <div class="kicker">01 · Design tokens</div>
+      <h2>Colour — one accent, meaning elsewhere</h2>
+      <p class="note">Teal is the <em>only</em> interactive colour. Green/blue/amber/red are reserved for
+      meaning (grade bands, statuses, errors). Switch to ☾ Ink to see the same tokens at night —
+      this is exactly what <code style="font-family:var(--mono)">values-night/colors.xml</code> will hold.</p>
+      <div class="swatchgrid">
+        <div class="swatch"><div class="chip" style="background:var(--paper)" data-token="window"></div><div class="info"><b>Paper</b><code>#FAF7F0 / #0E1A1D</code></div></div>
+        <div class="swatch"><div class="chip" style="background:var(--card)" data-token="surface"></div><div class="info"><b>Card</b><code>#FFFFFF / #152528</code></div></div>
+        <div class="swatch"><div class="chip" style="background:var(--ink)" data-token="text"></div><div class="info"><b>Ink</b><code>#14282E / #F2EDE3</code></div></div>
+        <div class="swatch"><div class="chip" style="background:var(--ink-muted)" data-token="text-2"></div><div class="info"><b>Ink muted</b><code>#5D6B70 / #9DB4B8</code></div></div>
+        <div class="swatch"><div class="chip" style="background:var(--hairline)" data-token="stroke"></div><div class="info"><b>Hairline</b><code>#E4DFD3 / #24383C</code></div></div>
+        <div class="swatch solid"><div class="chip" style="background:var(--faculty)"></div><div class="info"><b>Faculty teal</b><code>#0F766E / #5EEAD4</code></div></div>
+        <div class="swatch solid"><div class="chip" style="background:var(--faculty-soft)"></div><div class="info"><b>Teal container</b><code>#CCE8E4 / #0B4A44</code></div></div>
+        <div class="swatch solid"><div class="chip" style="background:var(--stamp-green)"></div><div class="info"><b>Stamp · green</b><code>First / Pass</code></div></div>
+        <div class="swatch solid"><div class="chip" style="background:var(--stamp-blue)"></div><div class="info"><b>Stamp · blue</b><code>Second Lower</code></div></div>
+        <div class="swatch solid"><div class="chip" style="background:var(--stamp-amber)"></div><div class="info"><b>Stamp · amber</b><code>General / Current</code></div></div>
+        <div class="swatch solid"><div class="chip" style="background:var(--stamp-red)"></div><div class="info"><b>Stamp · red</b><code>Not Eligible / Fail</code></div></div>
+      </div>
+
+      <h2 style="margin-top:40px">Type — one superfamily, three voices</h2>
+      <div class="typemap">
+        <div class="typecard"><div class="role">Display / numerals · Plex Serif 600</div><div class="sample t-display">3.42</div>
+          <p class="note" style="margin-top:8px">Wordmark, screen titles, the big GPA moment. The numeral is the app’s emotional payoff.</p></div>
+        <div class="typecard"><div class="role">Titles · Plex Serif 600</div><div class="sample t-title">Past papers</div>
+          <p class="note" style="margin-top:8px">Toolbar titles and card headings — always Serif, never bold-sans.</p></div>
+        <div class="typecard"><div class="role">UI / body · Plex Sans 400–600</div><div class="sample t-body">Database Systems I — covers relational modelling, normalisation and SQL. Three credits, graded.</div>
+          <p class="note" style="margin-top:8px">Everything interactive reads in Sans. Buttons 600, body 400.</p></div>
+        <div class="typecard"><div class="role">Catalog / metadata · Plex Mono 500</div><div class="sample t-code">ICT 2308 · Y2S1 · 2022 · 3cr<br>@tec.rjt.ac.lk · 45/120 cr</div>
+          <p class="note" style="margin-top:8px">Subject codes, meta lines, counters — the “typed record” feel that replaces four grey dashes.</p></div>
+      </div>
+    </section>
+
+    <!-- ======================= 02 DASHBOARD ======================= -->
+    <section class="section" id="dashboard">
+      <div class="kicker">02 · Dashboard (FR12)</div>
+      <h2>Greeting → snapshot hero → tiles → recent</h2>
+      <p class="note">Replaces the six-pill button salad with a 2×3 tile grid of equal weight, and the
+      grey snapshot slab with a serif GPA + band stamp. Entrance staggers ≤250ms — the twin of
+      <code style="font-family:var(--mono)">UiMotion.fadeUp</code>.</p>
+      <div class="stage">
+        <div class="phonewrap">
+          <div class="phonelabel"><h3>☀ Paper</h3><span>375 × 712 · light</span></div>
+          <div class="phone" data-nav="home">
+            <div class="statusbar"><span>10:24</span><span>LTE ▮</span></div>
+            <div class="appbar">
+              <div><div class="greet rise d1" style="margin:0">
+                <div><div class="hi">Good morning,<br>Viduwa</div>
+                <div class="sub">viduwa@tec.rjt.ac.lk</div>
+              </div></div>
+              <button class="gear" title="Settings">⚙</button>
+            </div>
+            <div class="phonebody">
+              <div class="card hero rise d2">
+                <div class="lab">Academic snapshot · BICT (Hons)</div>
+                <div class="gpa"><b>3.42</b><small>/ 4.00 CGPA</small></div>
+                <div class="bandrow"><span class="stamp st-teal stampin">Second Class · Upper</span></div>
+                <div class="credits">
+                  <div class="row"><span>Credits</span><span>45 / 120</span></div>
+                  <div class="bar"><i class="bar-anim" style="width:37.5%"></i></div>
+                </div>
+                <div class="semline">Y1S1 3.40 · Y1S2 3.50 · Y2S1 3.42</div>
+                <div class="nowchip"><span class="dot"></span>Current semester · Y2S2</div>
+              </div>
+              <div class="tiles">
+                <div class="card tile rise d3"><span class="ico">▤</span><span><b>Past papers</b><small>BROWSE</small></span></div>
+                <div class="card tile rise d3"><span class="ico">★</span><span><b>Favourites</b><small>4 SAVED</small></span></div>
+                <div class="card tile rise d4"><span class="ico">⇩</span><span><b>Offline</b><small>2 READY</small></span></div>
+                <div class="card tile rise d4"><span class="ico">✎</span><span><b>Request</b><small>MISSING PAPER</small></span></div>
+                <div class="card tile rise d5"><span class="ico">∑</span><span><b>GPA calc</b><small>WHAT-IF</small></span></div>
+                <div class="card tile rise d5"><span class="ico">◉</span><span><b>Tracking</b><small>FR09</small></span></div>
+              </div>
+              <div class="sechead rise d6"><h5>Recent favourites</h5><a href="#papers">SEE ALL →</a></div>
+              <div class="card listcard rise d6">
+                <div class="prow"><span class="info"><span class="name">Web Technologies</span><span class="meta">ICT2308L1 · Y2S1 · 2023</span></span><button class="star">★</button></div>
+                <div class="prow"><span class="info"><span class="name">Database Systems I</span><span class="meta">ICT2303 · Y2S1 · 2022</span></span><button class="star">★</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="phonewrap">
+          <div class="phonelabel"><h3>☾ Ink</h3><span>same tokens, values-night</span></div>
+          <div class="phone" data-skin="ink" data-nav="home">
+            <div class="statusbar"><span>22:41</span><span>WIFI ▮</span></div>
+            <div class="appbar">
+              <div><div class="greet rise d1" style="margin:0">
+                <div><div class="hi">Good evening,<br>Viduwa</div>
+                <div class="sub">viduwa@tec.rjt.ac.lk</div>
+              </div></div>
+              <button class="gear" title="Settings">⚙</button>
+            </div>
+            <div class="phonebody">
+              <div class="card hero rise d2">
+                <div class="lab">Academic snapshot · BICT (Hons)</div>
+                <div class="gpa"><b>3.42</b><small>/ 4.00 CGPA</small></div>
+                <div class="bandrow"><span class="stamp st-teal stampin">Second Class · Upper</span></div>
+                <div class="credits">
+                  <div class="row"><span>Credits</span><span>45 / 120</span></div>
+                  <div class="bar"><i class="bar-anim" style="width:37.5%"></i></div>
+                </div>
+                <div class="semline">Y1S1 3.40 · Y1S2 3.50 · Y2S1 3.42</div>
+                <div class="nowchip"><span class="dot"></span>Current semester · Y2S2</div>
+              </div>
+              <div class="tiles">
+                <div class="card tile rise d3"><span class="ico">▤</span><span><b>Past papers</b><small>BROWSE</small></span></div>
+                <div class="card tile rise d3"><span class="ico">★</span><span><b>Favourites</b><small>4 SAVED</small></span></div>
+                <div class="card tile rise d4"><span class="ico">⇩</span><span><b>Offline</b><small>2 READY</small></span></div>
+                <div class="card tile rise d4"><span class="ico">✎</span><span><b>Request</b><small>MISSING PAPER</small></span></div>
+                <div class="card tile rise d5"><span class="ico">∑</span><span><b>GPA calc</b><small>WHAT-IF</small></span></div>
+                <div class="card tile rise d5"><span class="ico">◉</span><span><b>Tracking</b><small>FR09</small></span></div>
+              </div>
+              <div class="sechead rise d6"><h5>Recent favourites</h5><a href="#papers">SEE ALL →</a></div>
+              <div class="card listcard rise d6">
+                <div class="prow"><span class="info"><span class="name">Web Technologies</span><span class="meta">ICT2308L1 · Y2S1 · 2023</span></span><button class="star">★</button></div>
+                <div class="prow"><span class="info"><span class="name">Database Systems I</span><span class="meta">ICT2303 · Y2S1 · 2022</span></span><button class="star">★</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= 03 PAPERS ======================= -->
+    <section class="section" id="papers">
+      <div class="kicker">03 · Papers (FR02–FR04)</div>
+      <h2>Labelled filters, honest count, real empty states</h2>
+      <p class="note">The four naked spinners become labelled exposed dropdowns; active filters become
+      removable chips with “Clear all”; the result count is finally visible; and the dead-end
+      empty/error text becomes a designed state with Retry.</p>
+      <div class="stage">
+        <div class="phonewrap">
+          <div class="phonelabel"><h3>Filtering</h3><span>active chips + count</span></div>
+          <div class="phone" data-nav="papers">
+            <div class="statusbar"><span>10:24</span><span>LTE ▮</span></div>
+            <div class="appbar"><button class="back">←</button><h4>Past papers</h4><button class="action">✦</button></div>
+            <div class="phonebody">
+              <div class="search rise d1"><span>⌕</span><input value="database" spellcheck="false"><kbd>SEARCH</kbd></div>
+              <div class="fgrid rise d2">
+                <div class="dropdown"><label>STUDY YEAR</label><span>2nd Year</span></div>
+                <div class="dropdown"><label>SEMESTER</label><span>1st Semester</span></div>
+                <div class="dropdown"><label>DEPARTMENT</label><span>ICT</span></div>
+                <div class="dropdown"><label>PAST-PAPER YEAR</label><span>All years</span></div>
+              </div>
+              <div class="countline rise d3">
+                <b>128 PAPERS</b>
+                <div class="chips"><span class="fchip">Y2 · S1 <i>×</i></span><span class="fchip">ICT <i>×</i></span><span class="fchip clear">CLEAR ALL</span></div>
+              </div>
+              <div class="card listcard rise d4">
+                <div class="prow"><span class="info"><span class="name">Database Systems I</span><span class="meta">ICT2303 · ITT · Y2S1 · 2022</span></span><button class="star">★</button></div>
+                <div class="prow"><span class="info"><span class="name">Database Systems II</span><span class="meta">ICT3312 · ITT · Y3S1 · 2024</span></span><button class="star hollow">☆</button></div>
+                <div class="prow"><span class="info"><span class="name">Information Systems</span><span class="meta">ICT2301 · ICT · Y2S1 · 2021</span></span><button class="star hollow">☆</button></div>
+                <div class="prow"><span class="info"><span class="name">Web Technologies</span><span class="meta">ICT2308L1 · ICT · Y2S1 · 2023</span></span><button class="star">★</button></div>
+                <div class="prow"><span class="info"><span class="name">Software Engineering</span><span class="meta">ICT3304 · ICT · Y3S1 · 2022</span></span><button class="star hollow">☆</button></div>
+                <div class="prow"><span class="info"><span class="name">Computer Networks</span><span class="meta">ICT3310 · ICT · Y3S1 · 2023</span></span><button class="star hollow">☆</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="phonewrap">
+          <div class="phonelabel"><h3>States</h3><span>loading · empty · error</span></div>
+          <div class="phone" data-nav="papers">
+            <div class="statusbar"><span>10:24</span><span>— ✕</span></div>
+            <div class="appbar"><button class="back">←</button><h4>Past papers</h4><button class="action">✦</button></div>
+            <div class="phonebody" style="display:grid;gap:var(--s3)">
+              <div class="card empty rise d1">
+                <div class="ring">◌</div><b>Looking for papers…</b><p>Talking to the portal — this takes a second.</p>
+              </div>
+              <div class="card empty rise d2">
+                <div class="ring">⌕</div><b>No papers found</b><p>Nothing matches “robotics 2011”. Try a subject code like ICT 2308.</p>
+                <button class="btn tonal">CLEAR FILTERS</button>
+              </div>
+              <div class="card empty rise d3">
+                <div class="ring" style="background:color-mix(in srgb,var(--stamp-red) 12%,transparent);color:var(--stamp-red)">!</div>
+                <b>Couldn’t reach the portal</b><p>Check your connection — your filters are safe and remembered.</p>
+                <button class="btn filled">RETRY</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= 04 DETAIL ======================= -->
+    <section class="section" id="detail">
+      <div class="kicker">04 · Paper detail (FR05–FR06, FR14)</div>
+      <h2>Hero → meta grid → icon action row</h2>
+      <p class="note">The fixed-110dp label table becomes a clean metagrid; the three anonymous buttons
+      get icons, a hierarchy (filled / tonal / outline) and a toggleable star. The offline state
+      becomes a stamped chip instead of a green line of text.</p>
+      <div class="stage">
+        <div class="phonewrap">
+          <div class="phonelabel"><h3>☀ Paper</h3><span>saved · offline copy exists</span></div>
+          <div class="phone" data-nav="none">
+            <div class="statusbar"><span>10:24</span><span>LTE ▮</span></div>
+            <div class="appbar"><button class="back">←</button><h4>ICT 2303</h4><button class="action">⤴</button></div>
+            <div class="phonebody">
+              <div class="card hero-detail rise d1">
+                <div class="dept">Faculty of Technology · ITT</div>
+                <span class="codechip" style="align-self:flex-start">ICT 2303</span>
+                <h6>Database Systems I</h6>
+              </div>
+              <div class="card metagrid rise d2">
+                <div class="mrow"><span class="k">Study year</span><span class="v">2nd Year</span></div>
+                <div class="mrow"><span class="k">Semester</span><span class="v">1st Semester</span></div>
+                <div class="mrow"><span class="k">Exam year</span><span class="v mono">2022</span></div>
+                <div class="mrow"><span class="k">File</span><span class="v mono">PDF · Drive</span></div>
+              </div>
+              <div class="offchip rise d3">✓ Saved offline — opens without a connection</div>
+              <div class="actions">
+                <button class="btn filled block rise d4">⧉&nbsp; OPEN PAPER</button>
+                <button class="btn tonal block rise d5">⇩&nbsp; REMOVE OFFLINE COPY</button>
+                <button class="btn outline block rise d6">★&nbsp; SAVED TO FAVOURITES</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="phonewrap">
+          <div class="phonelabel"><h3>☾ Ink</h3><span>not saved · no offline copy</span></div>
+          <div class="phone" data-skin="ink" data-nav="none">
+            <div class="statusbar"><span>22:41</span><span>WIFI ▮</span></div>
+            <div class="appbar"><button class="back">←</button><h4>ICT 2303</h4><button class="action">⤴</button></div>
+            <div class="phonebody">
+              <div class="card hero-detail rise d1">
+                <div class="dept">Faculty of Technology · ITT</div>
+                <span class="codechip" style="align-self:flex-start">ICT 2303</span>
+                <h6>Database Systems I</h6>
+              </div>
+              <div class="card metagrid rise d2">
+                <div class="mrow"><span class="k">Study year</span><span class="v">2nd Year</span></div>
+                <div class="mrow"><span class="k">Semester</span><span class="v">1st Semester</span></div>
+                <div class="mrow"><span class="k">Exam year</span><span class="v mono">2022</span></div>
+                <div class="mrow"><span class="k">File</span><span class="v mono">PDF · Drive</span></div>
+              </div>
+              <div class="actions">
+                <button class="btn filled block rise d3">⧉&nbsp; OPEN PAPER</button>
+                <button class="btn tonal block rise d4">⇩&nbsp; DOWNLOAD FOR OFFLINE</button>
+                <button class="btn outline block rise d5">☆&nbsp; SAVE TO FAVOURITES</button>
+              </div>
+              <p class="note rise d6" style="margin-top:16px;font-size:11.5px">Drive-locked papers open in the browser where
+              your university session grants access — same flow as today (ADR-0001), better explained.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= 05 GPA & TRACKING ======================= -->
+    <section class="section" id="gpa">
+      <div class="kicker">05 · GPA calculator (FR07–FR08) &amp; subject tracking (FR09–FR11)</div>
+      <h2>Stat blocks with band stamps, comfortable grade rows</h2>
+      <p class="note">Saved vs Current CGPA become two stat blocks under one roof — the Current side
+      previews <em>your next result</em> with a delta against the saved value. Subject rows split into
+      two lines (code+name / credits+grade dropdown), so nothing is squeezed at 360dp. Band stamps
+      recolour with every keystroke — <code style="font-family:var(--mono)">GradePoint.bandFor</code> made visible.</p>
+      <div class="stage">
+        <div class="phonewrap">
+          <div class="phonelabel"><h3>☀ GPA calculator</h3><span>what-if prediction · saved 3.42</span></div>
+          <div class="phone" data-nav="gpa">
+            <div class="statusbar"><span>10:24</span><span>LTE ▮</span></div>
+            <div class="appbar"><button class="back">←</button><h4>GPA calculator</h4><button class="action">⤴</button></div>
+            <div class="phonebody">
+              <div class="fgrid rise d1">
+                <div class="dropdown"><label>PROGRAMME</label><span>BICT (Hons) — ICT</span></div>
+                <div class="dropdown"><label>SEMESTER</label><span>Y2S1 — 1st Sem</span></div>
+              </div>
+              <div class="card statgrid rise d2" style="margin-top:var(--s3)">
+                <div class="stat">
+                  <div class="lab">Saved CGPA</div>
+                  <div class="val"><b>3.42</b><small>/ 4.00</small></div>
+                  <span class="stamp st-teal">Second Upper</span>
+                </div>
+                <div class="stat">
+                  <div class="lab">Current entries</div>
+                  <div class="val"><b>3.67</b><small>/ 4.00</small></div>
+                  <div style="display:flex;align-items:center;gap:6px"><span class="stamp st-green">First Class</span><span class="delta up">▲ +0.25</span></div>
+          </div>
+        </div>
+                <div style="grid-column:1/-1;padding:0 var(--s4) var(--s3);display:grid;gap:6px">
+                  <div class="credits">
+                    <div class="row"><span>Credits</span><span>45 / 120</span></div>
+                    <div class="bar"><i class="bar-anim" style="width:37.5%"></i></div>
+                  </div>
+                </div>
+              </div>
+              <div class="sechead rise d3"><h5>Y2S1 subjects</h5><span class="codechip">5 subjects</span></div>
+              <div class="card listcard rise d4">
+                <div class="subrow">
+                  <div class="top"><span class="codechip">ICT 2303</span><span class="nm">Database Systems I</span></div>
+                  <div class="bot"><span class="cr">3 cr · Core</span><span class="ddown">Grade · A- </span></div>
+                </div>
+                <div class="subrow">
+                  <div class="top"><span class="codechip">ICT 2308</span><span class="nm">Web Technologies</span></div>
+                  <div class="bot"><span class="cr">4 cr · Core</span><span class="ddown">Grade · B+</span></div>
+                </div>
+                <div class="subrow">
+                  <div class="top"><span class="codechip">ICT 2311</span><span class="nm">Data Structures &amp; Algorithms</span></div>
+                  <div class="bot"><span class="cr">3 cr · Core</span><span class="ddown">Grade · A</span></div>
+                </div>
+                <div class="subrow">
+                  <div class="top"><span class="codechip">ICT 2301</span><span class="nm">Information Systems</span></div>
+                  <div class="bot"><span class="cr">3 cr · Core</span><span class="ddown">Grade · —</span></div>
+                </div>
+                <div class="subrow">
+                  <div class="top"><span class="codechip">CMT 2101</span><span class="nm">Career Skills (Non GPA)</span></div>
+                  <div class="bot"><span class="cr">2 cr · Non-GPA</span><span class="ddown">Pass / Fail</span></div>
+                </div>
+              </div>
+              <div class="actions rise d5" style="margin-top:var(--s4)">
+                <button class="btn filled block">⌘&nbsp; SAVE GRADES</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="phonewrap">
+          <div class="phonelabel"><h3>☾ Subject tracking</h3><span>FR09–FR11 · progress + statuses</span></div>
+          <div class="phone" data-skin="ink" data-nav="tracking">
+            <div class="statusbar"><span>22:41</span><span>WIFI ▮</span></div>
+            <div class="appbar"><button class="back">←</button><h4>Subject tracking</h4><button class="action">⤴</button></div>
+            <div class="phonebody">
+              <div class="card hero rise d1" style="gap:9px">
+                <div class="lab">BICT (Hons) · 120-credit programme</div>
+                <div class="credits">
+                  <div class="row"><span>Completed</span><span>45 / 120 credits</span></div>
+                  <div class="bar"><i class="bar-anim" style="width:37.5%"></i></div>
+                </div>
+                <div class="bandrow" style="gap:6px;flex-wrap:wrap">
+                  <span class="stamp st-green">✓ 12 Completed</span>
+                  <span class="stamp st-amber">◷ 5 Current</span>
+                  <span class="stamp st-blue">○ 15 Upcoming</span>
+                </div>
+              </div>
+              <div class="fgrid rise d2" style="grid-template-columns:1fr">
+                <div class="dropdown"><label>SEMESTER</label><span>Y2S2 — 2nd Semester</span></div>
+                <div class="dropdown"><label>PROGRAMME</label><span>BICT (Hons) — ICT</span></div>
+              </div>
+              <div class="sechead rise d3"><h5>This semester</h5><span class="codechip">6 subjects</span></div>
+              <div class="card listcard rise d4">
+                <div class="subrow">
+                  <div class="top"><span class="codechip">ICT 2312</span><span class="nm">Software Engineering</span></div>
+                  <div class="bot"><span class="cr">3 cr · Core</span><span class="ddown">◉ Current</span></div>
+                </div>
+                <div class="subrow">
+                  <div class="top"><span class="codechip">ICT 2314</span><span class="nm">Computer Networks</span></div>
+                  <div class="bot"><span class="cr">3 cr · Core</span><span class="ddown">◉ Current</span></div>
+                </div>
+                <div class="subrow">
+                  <div class="top"><span class="codechip">ICT 2316</span><span class="nm">Mobile Application Development</span></div>
+                  <div class="bot"><span class="cr">4 cr · Core</span><span class="ddown">◉ Current</span></div>
+                </div>
+                <div class="subrow">
+                  <div class="top"><span class="codechip">CMT 2201</span><span class="nm">Entrepreneurship (Non GPA)</span></div>
+                  <div class="bot"><span class="cr">2 cr · Non-GPA</span><span class="ddown">○ Upcoming</span></div>
+                </div>
+                <div class="subrow">
+                  <div class="top"><span class="codechip">ICT 2318</span><span class="nm">Operating Systems</span></div>
+                  <div class="bot"><span class="cr">3 cr · Core</span><span class="ddown">✓ Completed</span></div>
+                </div>
+              </div>
+              <p class="note rise d5" style="margin-top:14px;font-size:11.5px">Statuses drive the dashboard's “Current semester”
+              cue and the credits bar — FR10/FR11 verbatim, just legible now.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= 06 BOTTOM NAVIGATION ======================= -->
+    <section class="section" id="bottomnav">
+      <div class="kicker">06 · Bottom navigation + settings</div>
+      <h2>Four destinations, settings behind one gear</h2>
+      <p class="note">Today every jump routes through the dashboard. A 4-slot Material bar —
+      <strong>Home · Papers · GPA · Tracking</strong> — puts the high-frequency destinations on every
+      top-level screen. The second ring (Favourites, Offline, Request, Sign out) moves behind a
+      <strong>⚙ gear icon in the Home app bar</strong>: one tap, a clean settings sheet. Papers/GPA/Tracking
+      open as top-level (no back arrow, state kept); everything else stays a stacked page with up-nav.
+      48dp targets, 12/13px labels. Every phone in this preview wears the bar — tap around.</p>
+      <div class="strip" style="grid-template-columns:1fr 1fr">
+        <div class="card stripcard">
+          <h6>Anatomy</h6>
+          <div class="bottomnav" style="border:1px solid var(--hairline);border-radius:16px">
+            <button class="bnitem on"><span class="bico">⌂</span><span class="bnlabel">Home</span></button>
+            <button class="bnitem"><span class="bico">▤</span><span class="bnlabel">Papers</span></button>
+            <button class="bnitem"><span class="bico">∑</span><span class="bnlabel">GPA</span></button>
+            <button class="bnitem"><span class="bico">◉</span><span class="bnlabel">Track</span></button>
+          </div>
+          <p class="note" style="font-size:11.5px;margin-top:10px">Active = teal pill behind the icon. The same control
+          as <code style="font-family:var(--mono)">view_bottom_nav.xml</code> — this preview's buttons are wired:
+          clicking moves the pill.</p>
+        </div>
+        <div class="card stripcard">
+          <h6>⚙ Settings sheet — the second ring</h6>
+          <div class="sheet">
+            <div class="sitem"><span class="sico">★</span><span>Favourites<small>SAVED PAPERS</small></span></div>
+            <div class="sitem"><span class="sico">⇩</span><span>Offline papers<small>DOWNLOADED COPIES</small></span></div>
+            <div class="sitem"><span class="sico">✎</span><span>Request a paper<small>ASK THE PORTAL TEAM</small></span></div>
+            <div class="sitem"><span class="sico">i</span><span>Developer details<small>RUSLEARN v1.0 · ICT 3219 GROUP PROJECT</small></span></div>
+            <div class="sitem danger"><span class="sico">⏻</span><span>Sign out</span></div>
+          </div>
+          <p class="note" style="font-size:11.5px">A plain <code style="font-family:var(--mono)">AlertDialog</code> —
+          viva-safe, no BottomSheet component needed. Opened from the ⚙ on Home; Favourites and Offline
+          stay stacked pages (ticket 02), Request keeps its screen (ticket 08).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= 07 COMPONENTS ======================= -->
+    <section class="section" id="components">
+      <div class="kicker">07 · Component strip</div>
+      <h2>The shared vocabulary</h2>
+      <p class="note">Every control below becomes one Android style or include-layout — screens never
+      re-invent them.</p>
+      <div class="strip">
+        <div class="card stripcard">
+          <h6>Band stamps — GradePoint.bandFor</h6>
+          <span class="stamp st-green">First Class</span>
+          <span class="stamp st-teal">Second Upper</span>
+          <span class="stamp st-blue">Second Lower</span>
+          <span class="stamp st-amber">General</span>
+          <span class="stamp st-red">Not Eligible</span>
+          <span class="stamp st-green">Pass · Non-GPA</span>
+          <span class="stamp st-red">Fail</span>
+        </div>
+        <div class="card stripcard">
+          <h6>Buttons — MaterialButton styles</h6>
+          <button class="btn filled" style="justify-content:center">FILLED · PRIMARY</button>
+          <button class="btn tonal" style="justify-content:center">TONAL · SECONDARY</button>
+          <button class="btn outline" style="justify-content:center">OUTLINED · GHOST</button>
+          <button class="btn text" style="justify-content:center">TEXT · LOW KEY</button>
+          <button class="btn tonal" disabled style="justify-content:center">SENDING…</button>
+        </div>
+        <div class="card stripcard">
+          <h6>Inputs &amp; filters</h6>
+          <div class="dropdown"><label>PROGRAMME</label><span>BICT (Hons) — ICT</span></div>
+          <div class="dropdown"><label>SEMESTER</label><span>Y2S1 — 1st Semester</span></div>
+          <div class="search" style="height:auto;padding:8px 12px"><span>⌕</span><input placeholder="Subject, code or keyword"></div>
+          <div class="chips"><span class="fchip">2019 <i>×</i></span><span class="fchip">CMT <i>×</i></span><span class="fchip clear">CLEAR ALL</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= 06 BEFORE / AFTER ======================= -->
+    <section class="section" id="beforeafter">
+      <div class="kicker">08 · Before / After</div>
+      <h2>Same functionality, different credibility</h2>
+      <div class="ba">
+        <div class="before">
+          <h6>BEFORE — today’s build</h6>
+          <div class="brow">Past papers</div>
+          <div class="brow" style="color:#64748B;font-size:12px">ICT2308L1 · ICT · 2nd Year · 1st Semester · 2023</div>
+          <div style="margin-top:10px">
+            <span class="bbtn">Papers</span><span class="bbtn t">Request</span><span class="bbtn">GPA</span>
+          </div>
+          <small class="cap">no toolbar · no back button · flat slabs · random tints · default font</small>
+        </div>
+        <div class="after">
+          <h6 style="font:600 11px var(--mono);letter-spacing:.14em;color:var(--ink-muted)">AFTER — PAPER &amp; INK</h6>
+          <div class="brow">
+            <span class="codechip">ICT 2308</span>
+            <span style="flex:1;font:500 14px var(--sans)">Web Technologies</span>
+            <span class="stamp st-teal">Y2S1 · 2023</span>
+          </div>
+          <div style="margin-top:12px">
+            <span class="bbtn">⧉ OPEN</span><span class="bbtn t">★ SAVE</span>
+          </div>
+          <small class="cap">toolbar + up-nav · card rows · one accent · stamps carry meaning · Plex type</small>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= 07 MAPPING ======================= -->
+    <section class="section" id="mapping" style="margin-bottom:0">
+      <div class="kicker">09 · Android mapping</div>
+      <h2>From mockup to <code style="font-family:var(--mono);font-size:.7em">res/</code></h2>
+      <div class="map">
+        <div><b>Swatches</b> → values/colors.xml + values-night/colors.xml (this page’s CSS vars are a 1:1 copy)</div>
+        <div><b>Type cards</b> → res/font/ IBM Plex TTFs + TextAppearance.RUSLearn.* styles in themes.xml</div>
+        <div><b>App bar</b> → layout/view_toolbar.xml include (MaterialToolbar) — ticket 02</div>
+        <div><b>Paper row</b> → item_paper.xml v2 + PaperAdapter — ticket 03</div>
+        <div><b>Empty states</b> → view_empty_state.xml include with optional Retry — tickets 03/04</div>
+        <div><b>Stamps</b> → view_stamp.xml, colour set from GradePoint.bandFor — tickets 05/07</div>
+        <div><b>Dropdowns</b> → TextInputLayout + ExposedDropdownMenu (already in Material 1.12.0)</div>
+        <div><b>Bottom nav</b> → view_bottom_nav.xml + BottomNavigationView on 4 top-level screens — <em>new ticket 02b</em></div>
+        <div><b>Entrance motion</b> → UiMotion.fadeUp / .pop (ViewPropertyAnimator, ~30 lines) — ticket 03</div>
+      </div>
+      <p class="note" style="margin-top:16px">Approve the direction and the build order is
+      <a href="#">issues/01 → 08</a> in <code style="font-family:var(--mono)">.scratch/ui-overhaul/</code>.
+      Nothing functional changes: FR01–FR14, ADR-0003, toasts and the portal API stay exactly as they are.</p>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  /* Skin switcher — flips every token at once, like values-night/ does on Android */
+  const root = document.documentElement;
+  function setSkin(s){
+    root.dataset.skin = s;
+    document.getElementById('btnPaper').classList.toggle('on', s === 'paper');
+    document.getElementById('btnInk').classList.toggle('on', s === 'ink');
+    /* restart entrance animations so each skin demos the motion */
+    document.querySelectorAll('.rise,.bar-anim,.stampin').forEach(el => {
+      el.style.animation = 'none'; void el.offsetWidth; el.style.animation = '';
+    });
+  }
+  /* Demo interactions */
+  /* Bottom nav injector: phones are pure cards; the bar is injected so all phones stay in sync */
+  const NAV = [
+    {id:'home',    ico:'⌂', label:'Home',    href:'#dashboard'},
+    {id:'papers',  ico:'▤', label:'Papers',  href:'#papers'},
+    {id:'gpa',     ico:'∑', label:'GPA',     href:'#gpa'},
+    {id:'tracking',ico:'◉', label:'Track',   href:'#gpa'}
+  ];
+  document.querySelectorAll('.phone').forEach(ph => {
+    const which = ph.dataset.nav;
+    if (which === 'none') return;                       // detail: stacked page, no bar
+    const active = which === 'home' ? 'home' : which;
+    const bar = document.createElement('div');
+    bar.className = 'bottomnav';
+    bar.innerHTML = NAV.map(n => `
+      <button class="bnitem${n.id === active ? ' on' : ''}" data-jump="${n.href}">
+        <span class="bico">${n.ico}</span><span class="bnlabel">${n.label}</span>
+      </button>`).join('');
+    ph.appendChild(bar);
+  });
+  /* Bar taps: move the pill within the bar; jump to the matching preview section */
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('.bnitem');
+    if (!btn) return;
+    const bar = btn.closest('.bottomnav');
+    bar.querySelectorAll('.bnitem').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    const jump = btn.dataset.jump;
+    if (jump && location.hash !== jump) location.hash = jump;
+  });
+  document.querySelectorAll('.prow .star').forEach(b => b.addEventListener('click', e => {
+    e.stopPropagation();
+    b.classList.toggle('hollow');
+    b.textContent = b.classList.contains('hollow') ? '☆' : '★';
+    b.animate([{transform:'scale(1)'},{transform:'scale(1.25)'},{transform:'scale(1)'}], {duration:180, easing:'ease-out'}); /* UiMotion.pop */
+  }));
+</script>
+</body>
+</html>

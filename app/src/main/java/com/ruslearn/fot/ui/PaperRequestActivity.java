@@ -21,7 +21,7 @@ import java.io.IOException;
  * Paper request form (FR13): asks the portal for a missing paper through its
  * feature-request endpoint. Limited to 500 characters with a live counter.
  */
-public class PaperRequestActivity extends AppCompatActivity {
+public class PaperRequestActivity extends ToolbarActivity {
 
     private static final int MAX_REQUEST_CHARS = 500;
 
@@ -34,7 +34,7 @@ public class PaperRequestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_paper_request);
-        setTitle(getString(R.string.request_title));
+        bindToolbar(R.string.request_title, true);
 
         etRequest = findViewById(R.id.etRequest);
         tvCounter = findViewById(R.id.tvRequestCounter);

@@ -29,7 +29,7 @@ import java.util.Locale;
  * Downloaded papers (FR14). Tap opens the local PDF with the device's viewer via
  * FileProvider; long-press removes the copy (file + row) after confirming.
  */
-public class OfflinePapersActivity extends AppCompatActivity {
+public class OfflinePapersActivity extends ToolbarActivity {
 
     private static final String FILE_PROVIDER = "com.ruslearn.fot.fileprovider";
     private static final String PDF_MIME = "application/pdf";
@@ -45,7 +45,7 @@ public class OfflinePapersActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offline_papers);
-        setTitle(getString(R.string.offline_title));
+        bindToolbar(R.string.offline_title, true);
 
         tvEmpty = findViewById(R.id.tvOfflineEmpty);
 
