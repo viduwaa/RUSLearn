@@ -16,6 +16,7 @@ import com.ruslearn.fot.auth.GoogleAuth;
 import com.ruslearn.fot.data.DatabaseHelper;
 import com.ruslearn.fot.data.SessionManager;
 import com.ruslearn.fot.data.SubjectCatalogLoader;
+import com.ruslearn.fot.data.ThemePrefs;
 import com.ruslearn.fot.model.GradePoint;
 import com.ruslearn.fot.model.Paper;
 import com.ruslearn.fot.model.Program;
@@ -38,6 +39,7 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ThemeSwitcher.apply(new ThemePrefs(this));
         setContentView(R.layout.activity_dashboard);
 
         session = new SessionManager(this);

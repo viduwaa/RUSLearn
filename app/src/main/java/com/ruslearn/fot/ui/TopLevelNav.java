@@ -2,6 +2,7 @@ package com.ruslearn.fot.ui;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ruslearn.fot.R;
+import com.ruslearn.fot.data.ThemePrefs;
 
 /**
  * Shared bottom-nav + settings-sheet behaviour for the four top-level screens
@@ -87,34 +89,71 @@ public final class TopLevelNav {
         activity.startActivity(intent);
     }
 
-    /** The plain-AlertDialog settings sheet — Favourites/Offline/Request/Dev/Sign out. */
+    /**
+     * The ⚙ settings sheet — icon-tile rows matching the mockup (preview section 06).
+     * Built as an AlertDialog with a custom view (transparent frame) so row clicks
+     * route through the standard dialog window; every row dismisses, then acts.
+     */
     private void showSettingsSheet() {
-        String[] items = {
-                activity.getString(R.string.settings_favourites),
-                activity.getString(R.string.settings_offline),
-                activity.getString(R.string.settings_request),
-                activity.getString(R.string.settings_developer),
-                activity.getString(R.string.settings_sign_out)
-        };
-        new AlertDialog.Builder(activity)
-                .setTitle(R.string.settings_title)
-                .setItems(items, (dialog, which) -> {
-                    if (which == 0) {
-                        activity.startActivity(
-                                new Intent(activity, FavouritesActivity.class));
-                    } else if (which == 1) {
-                        activity.startActivity(
-                                new Intent(activity, OfflinePapersActivity.class));
-                    } else if (which == 2) {
-                        activity.startActivity(
-                                new Intent(activity, PaperRequestActivity.class));
-                    } else if (which == 3) {
-                        showDeveloperDetails();
-                    } else if (which == 4) {
-                        signOutHost.onSignOut();
-                    }
-                })
-                .show();
+        View sheet = activity.getLayoutInflater()
+                .inflate(R.layout.view_settings_sheet, null);
+        AlertDialog dialog = new AlertDialog.Builder(activity)
+                .setView(sheet)
+                .create();
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        sheet.findViewById(R.id.rowFavourites).setOnClickListener(v -> {
+            dialog.dismiss();
+            activity.startActivity(new Intent(activity, FavouritesActivity.class));
+        });
+        sheet.findViewById(R.id.rowOffline).setOnClickListener(v -> {
+            dialog.dismiss();
+            activity.startActivity(new Intent(activity, OfflinePapersActivity.class));
+        });
+        sheet.findViewById(R.id.rowRequest).setOnClickListener(v -> {
+            dialog.dismiss();
+            activity.startActivity(new Intent(activity, PaperRequestActivity.class));
+        });
+        sheet.findViewById(R.id.rowTheme).setOnClickListener(v ->
+                cycleTheme(dialog));
+        sheet.findViewById(R.id.rowDeveloper).setOnClickListener(v -> {
+            dialog.dismiss();
+            showDeveloperDetails();
+        });
+        sheet.findViewById(R.id.rowSignOut).setOnClickListener(v -> {
+            dialog.dismiss();
+            signOutHost.onSignOut();
+        });
+
+        dialog.show();
+    }
+
+    /** Paper → Ink → System → Paper; saves, re-applies, updates the row caption. */
+    private void cycleTheme(AlertDialog dialog) {
+        ThemePrefs prefs = new ThemePrefs(activity);
+        String mode = prefs.load();
+        String next;
+        int label;
+        switch (mode) {
+            case ThemePrefs.PAPER:
+                next = ThemePrefs.INK;
+                label = R.string.theme_ink;
+                break;
+            case ThemePrefs.INK:
+                next = ThemePrefs.SYSTEM;
+                label = R.string.theme_system;
+                break;
+            default:
+                next = ThemePrefs.PAPER;
+                label = R.string.theme_paper;
+        }
+        prefs.save(next);
+        ThemeSwitcher.apply(prefs);
+
+        TextView caption = dialog.findViewById(R.id.tvThemeValue);
+        if (caption != null) {
+            caption.setText(label);
+        }
     }
 
     private void showDeveloperDetails() {

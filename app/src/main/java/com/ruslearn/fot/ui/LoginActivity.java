@@ -20,6 +20,7 @@ import com.ruslearn.fot.auth.GoogleAuth;
 import com.ruslearn.fot.auth.JwtPayloadDecoder;
 import com.ruslearn.fot.data.DatabaseHelper;
 import com.ruslearn.fot.data.SessionManager;
+import com.ruslearn.fot.data.ThemePrefs;
 
 import org.json.JSONObject;
 
@@ -41,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ThemeSwitcher.apply(new ThemePrefs(this));
         session = new SessionManager(this);
 
         // Already signed in on this device: skip straight to the dashboard.

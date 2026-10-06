@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.ruslearn.fot.R;
+import com.ruslearn.fot.data.ThemePrefs;
 
 /**
  * Base activity for sub-screens with the shared toolbar include (audit S4).
@@ -14,6 +15,12 @@ import com.ruslearn.fot.R;
  * toolbar title replaces the invisible setTitle(...) calls this app used to make.
  */
 public abstract class ToolbarActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ThemeSwitcher.apply(new ThemePrefs(this));
+    }
 
     /**
      * Binds the view_toolbar.xml include.

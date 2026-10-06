@@ -13,5 +13,6 @@
     <color name="colorStampAmber">#FBBF24</color>
     <color name="colorStampBlue">#93C5FD</color>
     <color name="colorStampRed">#F87171</color>
+    <color name="colorStampRedContainer">#3A1D1D</color>
     <color name="colorError">#F87171</color>
 </resources>

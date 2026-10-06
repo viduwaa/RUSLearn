@@ -21,6 +21,7 @@
     <color name="colorStampAmber">#B45309</color>
     <color name="colorStampBlue">#1D4ED8</color>
     <color name="colorStampRed">#B91C1C</color>
+    <color name="colorStampRedContainer">#FADDDD</color>
     <color name="colorError">#B91C1C</color>
 
     <!-- Legacy aliases — retire as the screen tickets re-skin each layout -->
