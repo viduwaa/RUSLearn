@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RUSLearn</string>
+    <string name="dashboard_title">FOT Academic Companion</string>
+    <string name="dashboard_subtitle">Rajarata University · Faculty of Technology</string>
+    <string name="dashboard_placeholder">Project bootstrapped (M0). Papers, GPA tools and tracking arrive in later milestones.</string>
+</resources>
