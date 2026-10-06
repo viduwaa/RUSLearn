@@ -128,6 +128,20 @@
         <item name="android:textColor">@color/colorFaculty</item>
     </style>
 
+    <!-- ===== Text field (plain input: search, request textarea) ===== -->
+
+    <style name="Field.RUSLearn" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/colorHairline</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxBackgroundColor">@color/colorCard</item>
+        <item name="boxCornerRadiusTopStart">12dp</item>
+        <item name="boxCornerRadiusTopEnd">12dp</item>
+        <item name="boxCornerRadiusBottomStart">12dp</item>
+        <item name="boxCornerRadiusBottomEnd">12dp</item>
+        <item name="android:textColorHint">@color/colorInkMuted</item>
+        <item name="hintTextColor">@color/colorFaculty</item>
+    </style>
+
     <!-- ===== Exposed dropdown (spec §3.5: Dropdown.RUSLearn) ===== -->
 
     <style name="Dropdown.RUSLearn" parent="Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
