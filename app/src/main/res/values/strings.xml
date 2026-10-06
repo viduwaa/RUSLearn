@@ -15,6 +15,11 @@
     <string name="login_failed_generic">Google sign-in failed. Please try again.</string>
     <string name="login_config_error">Google sign-in is not configured (web client id). See README.</string>
     <string name="dashboard_logout">Sign out</string>
+    <string name="dashboard_snapshot_heading">Your academic snapshot</string>
+    <string name="dashboard_no_data">Nothing saved yet — save grades in the GPA calculator or set subjects in tracking.</string>
+    <string name="dashboard_current_format">Current semester: %1$s</string>
+    <string name="dashboard_recent_heading">Recent favourites</string>
+    <string name="dashboard_no_saved">No favourite papers saved yet.</string>
 
     <string name="papers_title">Past papers</string>
     <string name="papers_search">Search</string>
@@ -47,6 +52,26 @@
     <string name="dashboard_favourites">Favourites</string>
     <string name="dashboard_offline">Offline papers</string>
     <string name="dashboard_request">Request a paper</string>
+
+    <string name="gpa_title">GPA calculator</string>
+    <string name="gpa_program">Programme</string>
+    <string name="gpa_semester">Semester</string>
+    <string name="gpa_saved_label">Saved CGPA</string>
+    <string name="gpa_current_label">Current entries</string>
+    <string name="gpa_save">Save grades</string>
+    <string name="gpa_value_format">%1$.2f</string>
+    <string name="gpa_dash">–</string>
+    <string name="gpa_no_value">No grades yet</string>
+    <string name="gpa_credits_progress">%1$d / %2$d credits completed</string>
+    <string name="subject_credits_format">%1$d cr</string>
+    <string name="toast_grades_saved">Grades saved</string>
+    <string name="toast_sign_in_first">Sign in first.</string>
+
+    <string name="tracking_title">Subject tracking</string>
+    <string name="tracking_completed_format">%1$d / %2$d credits completed</string>
+    <string name="tracking_current_format">Currently taking: %1$d subject(s)</string>
+    <string name="dashboard_gpa">GPA calculator</string>
+    <string name="dashboard_tracking">Subject tracking</string>
 
     <string name="detail_title_format">Paper · %1$s</string>
     <string name="detail_department">Department</string>

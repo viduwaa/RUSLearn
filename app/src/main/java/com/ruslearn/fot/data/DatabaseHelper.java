@@ -11,7 +11,9 @@ import com.ruslearn.fot.model.Paper;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Local app database (ADR-0002): everything student-owned lives only on the device.
@@ -19,11 +21,13 @@ import java.util.List;
  *   users          — Google profiles that signed in on this device (FR01)
  *   favourites     — saved papers, keyed by Drive file id (FR06)
  *   offline_papers — downloaded PDF metadata, keyed by Drive file id (FR14)
+ *   grade_records  — grades per user per programme subject (FR07)
+ *   subject_records— tracking status per user per programme subject (FR09)
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "RUSLearn.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     public static final String TABLE_USERS = "users";
     public static final String COLUMN_USERS_EMAIL = "email";
@@ -38,25 +42,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_OFFLINE = "offline_papers";
     public static final String COLUMN_FILE_PATH = "file_path";
 
+    public static final String TABLE_GRADES = "grade_records";
+    public static final String COLUMN_USER_EMAIL = "user_email";
+    public static final String COLUMN_PROGRAM_CODE = "program_code";
+    public static final String COLUMN_SUBJECT_CODE = "subject_code";
+    public static final String COLUMN_VALUE = "value";
+
+    public static final String TABLE_SUBJECTS = "subject_records";
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + TABLE_USERS + " ("
-                + COLUMN_USERS_EMAIL + " TEXT PRIMARY KEY, "
-                + COLUMN_USERS_NAME + " TEXT, "
-                + COLUMN_USERS_LAST_LOGIN + " INTEGER)");
-        db.execSQL("CREATE TABLE " + TABLE_FAVOURITES + " ("
-                + COLUMN_KEY_DRIVE_ID + " TEXT PRIMARY KEY, "
-                + COLUMN_PAPER_JSON + " TEXT NOT NULL, "
-                + COLUMN_ADDED_AT + " INTEGER)");
-        db.execSQL("CREATE TABLE " + TABLE_OFFLINE + " ("
-                + COLUMN_KEY_DRIVE_ID + " TEXT PRIMARY KEY, "
-                + COLUMN_PAPER_JSON + " TEXT NOT NULL, "
-                + COLUMN_FILE_PATH + " TEXT NOT NULL, "
-                + COLUMN_ADDED_AT + " INTEGER)");
+        createBaseTables(db);
+        createStudentTables(db);
     }
 
     @Override
@@ -72,6 +73,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + COLUMN_FILE_PATH + " TEXT NOT NULL, "
                     + COLUMN_ADDED_AT + " INTEGER)");
         }
+        if (oldVersion < 3) {
+            createStudentTables(db);
+        }
+    }
+
+    private void createBaseTables(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE " + TABLE_USERS + " ("
+                + COLUMN_USERS_EMAIL + " TEXT PRIMARY KEY, "
+                + COLUMN_USERS_NAME + " TEXT, "
+                + COLUMN_USERS_LAST_LOGIN + " INTEGER)");
+        db.execSQL("CREATE TABLE " + TABLE_FAVOURITES + " ("
+                + COLUMN_KEY_DRIVE_ID + " TEXT PRIMARY KEY, "
+                + COLUMN_PAPER_JSON + " TEXT NOT NULL, "
+                + COLUMN_ADDED_AT + " INTEGER)");
+        db.execSQL("CREATE TABLE " + TABLE_OFFLINE + " ("
+                + COLUMN_KEY_DRIVE_ID + " TEXT PRIMARY KEY, "
+                + COLUMN_PAPER_JSON + " TEXT NOT NULL, "
+                + COLUMN_FILE_PATH + " TEXT NOT NULL, "
+                + COLUMN_ADDED_AT + " INTEGER)");
+    }
+
+    private void createStudentTables(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE " + TABLE_GRADES + " ("
+                + COLUMN_USER_EMAIL + " TEXT NOT NULL, "
+                + COLUMN_PROGRAM_CODE + " TEXT NOT NULL, "
+                + COLUMN_SUBJECT_CODE + " TEXT NOT NULL, "
+                + COLUMN_VALUE + " TEXT NOT NULL, "
+                + "PRIMARY KEY (" + COLUMN_USER_EMAIL + ", "
+                + COLUMN_PROGRAM_CODE + ", " + COLUMN_SUBJECT_CODE + "))");
+        db.execSQL("CREATE TABLE " + TABLE_SUBJECTS + " ("
+                + COLUMN_USER_EMAIL + " TEXT NOT NULL, "
+                + COLUMN_PROGRAM_CODE + " TEXT NOT NULL, "
+                + COLUMN_SUBJECT_CODE + " TEXT NOT NULL, "
+                + COLUMN_VALUE + " TEXT NOT NULL, "
+                + "PRIMARY KEY (" + COLUMN_USER_EMAIL + ", "
+                + COLUMN_PROGRAM_CODE + ", " + COLUMN_SUBJECT_CODE + "))");
     }
 
     // ---------- Users (FR01) ----------
@@ -157,6 +194,64 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             this.filePath = filePath;
             this.savedAt = savedAt;
         }
+    }
+
+    // ---------- Grades and subject tracking (FR07, FR09) ----------
+
+    /** Saves the grade; "None" removes the row (unassigned, portal parity). */
+    public void saveGrade(String email, String programCode, String subjectCode, String grade) {
+        upsertKeyedValue(TABLE_GRADES, email, programCode, subjectCode, grade);
+    }
+
+    /** subject_code -> grade for this user/programme. */
+    public Map<String, String> getGrades(String email, String programCode) {
+        return readKeyedValues(TABLE_GRADES, email, programCode);
+    }
+
+    /** Saves a tracking status (completed/current/upcoming). */
+    public void saveSubjectStatus(String email, String programCode, String subjectCode,
+                                  String status) {
+        upsertKeyedValue(TABLE_SUBJECTS, email, programCode, subjectCode, status);
+    }
+
+    /** subject_code -> status for this user/programme. */
+    public Map<String, String> getSubjectStatuses(String email, String programCode) {
+        return readKeyedValues(TABLE_SUBJECTS, email, programCode);
+    }
+
+    private void upsertKeyedValue(String table, String email, String programCode,
+                                  String subjectCode, String value) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USER_EMAIL, email);
+        values.put(COLUMN_PROGRAM_CODE, programCode);
+        values.put(COLUMN_SUBJECT_CODE, subjectCode);
+        if ("None".equals(value) || value == null) {
+            db.delete(table, COLUMN_USER_EMAIL + "=? AND " + COLUMN_PROGRAM_CODE
+                    + "=? AND " + COLUMN_SUBJECT_CODE + "=?",
+                    new String[]{email, programCode, subjectCode});
+        } else {
+            values.put(COLUMN_VALUE, value);
+            db.insertWithOnConflict(table, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+        }
+        db.close();
+    }
+
+    private Map<String, String> readKeyedValues(String table, String email, String programCode) {
+        Map<String, String> values = new HashMap<>();
+        Cursor cursor = getReadableDatabase().query(table, null,
+                COLUMN_USER_EMAIL + "=? AND " + COLUMN_PROGRAM_CODE + "=?",
+                new String[]{email, programCode}, null, null, null);
+        if (cursor.moveToFirst()) {
+            do {
+                String subjectCode = cursor.getString(
+                        cursor.getColumnIndexOrThrow(COLUMN_SUBJECT_CODE));
+                String value = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_VALUE));
+                values.put(subjectCode, value);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return values;
     }
 
     // ---------- Internal helpers ----------
