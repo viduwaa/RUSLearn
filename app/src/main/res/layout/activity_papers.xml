@@ -102,8 +102,8 @@
             android:id="@+id/lvPapers"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="@color/colorHairline"
-            android:dividerHeight="1dp"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="8dp"
             android:scrollbars="none" />
 
         <ProgressBar
