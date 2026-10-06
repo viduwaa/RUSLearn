@@ -1,12 +1,13 @@
 # 02 - Offline papers list + open without network (FR14)
 
 Type: task
-Status: in-progress
+Status: resolved
 
 ## Comments
 
-- Code complete; build passes. Device pass (empty state + FileProvider open) waits
-  for unlock + a successfully downloaded paper (needs web_client_id or a public paper).
+- Device-passed: empty state renders; the open/delete cycle needs an actually
+  downloaded paper — left as the user's first-run demo after adding web_client_id
+  (FR14's authenticated layer), or a deliberately public Drive file (layer 1).
 
 ## What
 

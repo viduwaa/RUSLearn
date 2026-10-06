@@ -144,6 +144,7 @@ public class SubjectTrackingActivity extends AppCompatActivity {
         DatabaseHelper db = new DatabaseHelper(this);
         statuses.putAll(db.getSubjectStatuses(session.getEmail(), program.getCode()));
         db.close();
+        recomputeSummary();
 
         suppressingSpinnerEvents = true;
         semesterAdapter.clear();
@@ -216,6 +217,11 @@ public class SubjectTrackingActivity extends AppCompatActivity {
                 convertView = LayoutInflater.from(getContext())
                         .inflate(R.layout.item_subject_value, parent, false);
                 holder = new ViewHolder(convertView);
+                ArrayAdapter<String> statusAdapter = new ArrayAdapter<>(getContext(),
+                        android.R.layout.simple_spinner_item, STATUS_OPTIONS);
+                statusAdapter.setDropDownViewResource(
+                        android.R.layout.simple_spinner_dropdown_item);
+                holder.value.setAdapter(statusAdapter);
                 convertView.setTag(holder);
                 holder.value.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override

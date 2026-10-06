@@ -5,8 +5,10 @@ Status: resolved
 
 ## Comments
 
-- Build-verified; the same device pass as M4/M5 covers the dashboard (session card,
-  snapshot card, shortcuts, recent favourites).
+- Device-passed: session card (name/email + Sign out → back to login, prefs cleared,
+  no crash), snapshot card live-updating from saved grades/statuses (GPA 3.25, band,
+  6/120 credits bar, "Y1S1 3.25" line, "Current semester: Y1S1"), the full shortcut
+  grid (every cell launches its screen), and the recent-favourites strip.
 
 ## What
 

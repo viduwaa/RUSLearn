@@ -1,12 +1,13 @@
 # 01 - Favourites screen (FR06)
 
 Type: task
-Status: in-progress
+Status: resolved
 
 ## Comments
 
-- Code complete; build passes. Device pass (saved-papers list, remove flow) pending
-  the user unlocking the attached phone; the seeded BPT 1201 favourite should appear.
+- Device-passed: saved row renders; long-press dialog showsRemove/Cancel and the
+  removal cleared the row ("No favourite papers saved yet" empty state);
+  re-favourite from detail re-populated it.
 
 ## What
 

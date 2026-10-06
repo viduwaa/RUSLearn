@@ -5,10 +5,13 @@ Status: resolved
 
 ## Comments
 
-- Build-verified; device pass (grade pickers, live vs saved cards, status saves)
-  pending the phone unlock — part of the combined verification pass.
-- FR08 carries in the two-card design: "Saved CGPA" from the database versus
-  "Current entries" live — future grades make the current card a projection.
+- Device-passed: grades A+/B/Pass on Y1S1 → current 3.25 "Second Class (Lower)",
+  6/120 credits (Non-GPA Pass counted); Save → saved card matches; per-user rows
+  read back from SQLite after relaunch. Tracking: statuses persisted (ICT 1111
+  Completed, CMT 1205 Current), summary + "Currently taking" counters correct, and
+  the dashboard derives "Current semester: Y1S1" + the GPA snapshot from them.
+- One fix en route: the tracking summary now initializes on programme load
+  (it previously stayed empty until the first pick).
 
 ## What
 

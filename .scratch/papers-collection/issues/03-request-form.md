@@ -1,12 +1,13 @@
 # 03 - Paper requests form (FR13)
 
 Type: task
-Status: in-progress
+Status: resolved
 
 ## Comments
 
-- Code complete; build passes. Device pass (counter, submit, server receipt) waits
-  for unlock; the POST will then be verifiable in the portal's admin listing.
+- Device-passed END-TO-END: the submitted "RUSLearn ICT1507 2024 exam paper please"
+  appears as the newest entry in the portal's /api/feature-request admin listing;
+  the "n / 500" counter live-updates as typed.
 
 ## What
 
