@@ -188,15 +188,21 @@ public class GpaCalculatorActivity extends ToolbarActivity {
         recomputeCards();
     }
 
-    /** Persists the current semester's entries; "None" entries drop old rows. */
+    /**
+     * Persists every semester's entries in one go (not just the displayed one):
+     * all grades picked this session live in currentGrades, keyed by subject code,
+     * so the save walks the whole programme. "None" entries drop old rows.
+     */
     private void saveGrades() {
-        if (program == null || semesterKey == null) {
+        if (program == null) {
             return;
         }
         DatabaseHelper db = new DatabaseHelper(this);
-        for (Subject subject : semesterSubjects) {
-            db.saveGrade(session.getEmail(), program.getCode(), subject.getCode(),
-                    currentGrades.getOrDefault(subject.getCode(), GradePoint.UNASSIGNED));
+        for (List<Subject> subjects : program.getSemesters().values()) {
+            for (Subject subject : subjects) {
+                db.saveGrade(session.getEmail(), program.getCode(), subject.getCode(),
+                        currentGrades.getOrDefault(subject.getCode(), GradePoint.UNASSIGNED));
+            }
         }
         db.close();
         Toast.makeText(this, R.string.toast_grades_saved, Toast.LENGTH_SHORT).show();
@@ -235,10 +241,13 @@ public class GpaCalculatorActivity extends ToolbarActivity {
         if (Double.isNaN(gpa)) {
             valueView.setText(getString(R.string.gpa_dash));
             bandView.setText(getString(R.string.gpa_no_value));
+            bandView.setTextColor(androidx.core.content.ContextCompat.getColor(
+                    this, R.color.colorInkMuted));
             return;
         }
         valueView.setText(getString(R.string.gpa_value_format, gpa));
         bandView.setText(GradePoint.bandFor(gpa));
+        Stamp.apply(bandView, gpa);
     }
 
     /**

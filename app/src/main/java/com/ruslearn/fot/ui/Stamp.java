@@ -26,9 +26,12 @@ public final class Stamp {
     public static void apply(TextView stamp, double gpa) {
         int colour = colorFor(stamp, gpa);
         stamp.setTextColor(colour);
-        GradientDrawable background = (GradientDrawable) stamp.getBackground();
-        background.setTint(tintOverCard(colour,
-                ContextCompat.getColor(stamp.getContext(), R.color.colorCard)));
+        if (stamp.getBackground() instanceof GradientDrawable) {
+            GradientDrawable background = (GradientDrawable) stamp.getBackground();
+            background.setTint(tintOverCard(colour,
+                    ContextCompat.getColor(stamp.getContext(), R.color.colorCard)));
+        }
+        // No pill background: coloured text alone still carries the band meaning.
     }
 
     /** Source colour at ~14% alpha, alpha-composited over the card colour. */
