@@ -21,6 +21,14 @@
         </activity>
 
         <activity
+            android:name=".ui.PapersActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.PaperDetailActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".ui.DashboardActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />

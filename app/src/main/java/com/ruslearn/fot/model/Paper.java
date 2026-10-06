@@ -1,15 +1,18 @@
 package com.ruslearn.fot.model;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * One past-paper record from the portal's /api/papers response. Field names in JSON
  * stay snake_case exactly as the portal sends them; accessors use camelCase.
+ * Implements Serializable so it travels between screens in an Intent.
  */
-public class Paper {
+public class Paper implements Serializable {
 
     private static final Pattern DRIVE_FILE_ID = Pattern.compile("/file/d/([^/]+)");
 
@@ -74,7 +77,7 @@ public class Paper {
     public String getCourseName() { return courseName; }
 
     /**
-     * Extracts the Google Drive file id from the view URL; the offline-download
+     * Extracts the Google Drive file id from the view URL; the offline download
      * feature (FR14) builds download links from it.
      */
     public String getDriveFileId() {
@@ -83,5 +86,26 @@ public class Paper {
         }
         Matcher matcher = DRIVE_FILE_ID.matcher(viewUrl);
         return matcher.find() ? matcher.group(1) : null;
+    }
+
+    /** Serialises back to the portal's JSON shape (used to snapshot this paper locally). */
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("file_name", fileName);
+            json.put("view_url", viewUrl);
+            json.put("preview_url", previewUrl);
+            json.put("department_code", departmentCode);
+            json.put("department_name", departmentName);
+            json.put("academic_year", academicYear);
+            json.put("semester", semester);
+            json.put("exam_year", examYear);
+            json.put("course_code", courseCode);
+            json.put("course_name", courseName);
+        } catch (JSONException e) {
+            // put() of plain strings cannot fail; keep the honesty anyway.
+            throw new IllegalStateException("Paper JSON serialization failed", e);
+        }
+        return json;
     }
 }

@@ -33,11 +33,11 @@
         android:textSize="13sp" />
 
     <Button
-        android:id="@+id/btnLoadPapers"
+        android:id="@+id/btnBrowsePapers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="@string/debug_load_papers" />
+        android:text="@string/dashboard_browse_papers" />
 
     <Button
         android:id="@+id/btnLogout"

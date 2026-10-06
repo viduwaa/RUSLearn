@@ -1,9 +1,8 @@
 package com.ruslearn.fot.api;
 
-import java.io.BufferedReader;
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -19,26 +18,34 @@ public class RestClient {
     private static final int CONNECT_TIMEOUT_MS = 10_000;
     private static final int READ_TIMEOUT_MS = 15_000;
 
-    /** Raw HTTP result: status code plus the decoded body (empty when absent). */
+    /** Raw HTTP result: status code, body decoded for JSON use, raw bytes for downloads. */
     public static final class RawResponse {
         public final int code;
         public final String body;
+        public final byte[] bytes;
 
-        RawResponse(int code, String body) {
+        RawResponse(int code, String body, byte[] bytes) {
             this.code = code;
-            this.body = body;
+            this.body = body == null ? "" : body;
+            this.bytes = bytes == null ? new byte[0] : bytes;
         }
     }
 
     public static RawResponse get(String url) throws IOException {
-        return send("GET", url, null);
+        return send("GET", url, null, null);
+    }
+
+    /** GET with a bearer token (Drive API offline downloads, FR14). */
+    public static RawResponse get(String url, String bearerToken) throws IOException {
+        return send("GET", url, null, bearerToken);
     }
 
     public static RawResponse postJson(String url, String jsonBody) throws IOException {
-        return send("POST", url, jsonBody);
+        return send("POST", url, jsonBody, null);
     }
 
-    private static RawResponse send(String method, String url, String jsonBody) throws IOException {
+    private static RawResponse send(String method, String url, String jsonBody,
+                                    String bearerToken) throws IOException {
         HttpURLConnection connection = null;
         try {
             connection = (HttpURLConnection) new URL(url).openConnection();
@@ -46,6 +53,9 @@ public class RestClient {
             connection.setReadTimeout(READ_TIMEOUT_MS);
             connection.setRequestMethod(method);
             connection.setRequestProperty("Accept", "application/json");
+            if (bearerToken != null) {
+                connection.setRequestProperty("Authorization", "Bearer " + bearerToken);
+            }
             if (jsonBody != null) {
                 connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
                 connection.setDoOutput(true);
@@ -53,7 +63,9 @@ public class RestClient {
                     out.write(jsonBody.getBytes(StandardCharsets.UTF_8));
                 }
             }
-            return new RawResponse(connection.getResponseCode(), readBody(connection));
+            byte[] bytes = readAll(connection);
+            return new RawResponse(connection.getResponseCode(),
+                    new String(bytes, StandardCharsets.UTF_8), bytes);
         } finally {
             if (connection != null) {
                 connection.disconnect();
@@ -62,25 +74,22 @@ public class RestClient {
     }
 
     /** Reads the error stream for HTTP error codes, otherwise the normal stream. */
-    private static String readBody(HttpURLConnection connection) throws IOException {
+    private static byte[] readAll(HttpURLConnection connection) throws IOException {
         InputStream stream = connection.getResponseCode() >= 400
                 ? connection.getErrorStream()
                 : connection.getInputStream();
         if (stream == null) {
-            return "";
+            return new byte[0];
         }
-        StringBuilder text = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(stream, StandardCharsets.UTF_8))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (text.length() > 0) {
-                    text.append('\n');
-                }
-                text.append(line);
+        java.io.ByteArrayOutputStream buffer = new java.io.ByteArrayOutputStream();
+        try (InputStream in = new BufferedInputStream(stream)) {
+            byte[] chunk = new byte[8_192];
+            int read;
+            while ((read = in.read(chunk)) != -1) {
+                buffer.write(chunk, 0, read);
             }
         }
-        return text.toString();
+        return buffer.toByteArray();
     }
 
     private RestClient() {

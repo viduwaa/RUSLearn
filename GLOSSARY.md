@@ -10,11 +10,11 @@ Domain vocabulary for RUSLearn — FOT Academic Companion. Use these exact terms
 
 ## Studies
 
-- **Department** — a Faculty of Technology programme. Codes: `ICT` (Information & Communication Technology), `ITT` (treated as equivalent to ICT), `CMT`, `CML` (Common — present for every department), `BPT`, `EET`, `FDT`, `MTT`.
+- **Department** — a Faculty of Technology programme. Codes: `ICT` (Information & Communication Technology), `ITT` (treated as equivalent to ICT), `CMT`, `CML` (Common — present for every department), `BPT`, `EET`, `FDT`, `MTT`. Filter dropdowns render the live portal values verbatim, which include a few stray codes (e.g. `CMT1009`) — mirror them as-is.
 - **Subject** — a course unit: `code` (e.g. `ICT 2308`), `name`, `credits`, `type` (one of `Core`, `Optional`, `Non GPA`). The full Subject Catalog (all departments × all semesters, per the 2022 Handbook) ships inside the app.
 - **Non GPA subject** — a subject graded Pass/Fail. It is excluded from GPA calculations, but a Pass adds its credits to the completed-credit total.
-- **Semester** — `Semester I` / `Semester II` within a year of study.
-- **Study Year** — `First Year` … `Fourth Year`; the `academic_year` column of a paper.
+- **Semester** — `1st Semester` / `2nd Semester` (also legacy `Semester I` / `Semester II` rows exist); the bundled catalog keys semesters `Y1S1`…`Y4S2`.
+- **Study Year** — `1st Year` … `4th Year` (the live portal's wording); the `academic_year` column of a paper.
 - **Exam Year** — the calendar year a particular past exam was held; the `exam_year` column of a paper (`"2018"`…). Study Year ≠ Exam Year.
 - **Semester GPA** — weighted by credits over graded subjects of one semester. **Overall GPA** (CGPA) — weighted over all graded subjects of the programme There will be ±0.01 rounding like the portal.
 

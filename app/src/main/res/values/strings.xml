@@ -15,4 +15,32 @@
     <string name="login_failed_generic">Google sign-in failed. Please try again.</string>
     <string name="login_config_error">Google sign-in is not configured (web client id). See README.</string>
     <string name="dashboard_logout">Sign out</string>
+
+    <string name="papers_title">Past papers</string>
+    <string name="papers_search">Search</string>
+    <string name="papers_search_hint">Subject, code or keyword</string>
+    <string name="papers_empty_no_results">No papers found matching the filters.</string>
+    <string name="papers_error_network">Couldn\'t reach the portal. Check your connection and try again.</string>
+    <string name="paper_meta_format">%1$s · %2$s · %3$s · %4$s</string>
+    <string name="content_favourite_star">Favourite indicator</string>
+
+    <string name="detail_title_format">Paper · %1$s</string>
+    <string name="detail_department">Department</string>
+    <string name="detail_study_year">Study year</string>
+    <string name="detail_semester">Semester</string>
+    <string name="detail_exam_year">Exam year</string>
+    <string name="detail_offline_badge">Saved offline — available without an internet connection.</string>
+    <string name="action_open">Open paper</string>
+    <string name="action_download">Download for offline</string>
+    <string name="action_remove_offline">Remove offline copy</string>
+    <string name="action_favourite_save">Save to favourites</string>
+    <string name="action_favourite_remove">Remove favourite</string>
+    <string name="toast_no_browser">No browser is available to open the paper.</string>
+    <string name="toast_no_drive_file">This paper has no available file.</string>
+    <string name="toast_fav_saved">Saved to favourites</string>
+    <string name="toast_fav_removed">Removed from favourites</string>
+    <string name="toast_downloading">Saving for offline…</string>
+    <string name="toast_offline_saved">Paper saved for offline</string>
+    <string name="toast_offline_removed">Offline copy removed</string>
+    <string name="dashboard_browse_papers">Browse past papers</string>
 </resources>
