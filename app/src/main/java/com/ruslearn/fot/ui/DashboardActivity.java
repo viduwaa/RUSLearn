@@ -25,6 +25,18 @@ public class DashboardActivity extends AppCompatActivity {
         browsePapers.setOnClickListener(v ->
                 startActivity(new Intent(this, PapersActivity.class)));
 
+        Button favourites = findViewById(R.id.btnFavourites);
+        favourites.setOnClickListener(v ->
+                startActivity(new Intent(this, FavouritesActivity.class)));
+
+        Button offline = findViewById(R.id.btnOffline);
+        offline.setOnClickListener(v ->
+                startActivity(new Intent(this, OfflinePapersActivity.class)));
+
+        Button request = findViewById(R.id.btnRequest);
+        request.setOnClickListener(v ->
+                startActivity(new Intent(this, PaperRequestActivity.class)));
+
         Button logout = findViewById(R.id.btnLogout);
         logout.setOnClickListener(v -> signOut());
     }

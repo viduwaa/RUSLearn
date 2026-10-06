@@ -24,6 +24,28 @@
             android:name=".ui.PapersActivity"
             android:exported="false" />
 
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <activity
+            android:name=".ui.FavouritesActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.OfflinePapersActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.PaperRequestActivity"
+            android:exported="false" />
+
         <activity
             android:name=".ui.PaperDetailActivity"
             android:exported="false" />

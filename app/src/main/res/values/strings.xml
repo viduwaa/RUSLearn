@@ -24,6 +24,30 @@
     <string name="paper_meta_format">%1$s · %2$s · %3$s · %4$s</string>
     <string name="content_favourite_star">Favourite indicator</string>
 
+    <string name="favourites_title">Favourites</string>
+    <string name="favourites_empty">Nothing saved yet. Open a paper and tap Save to favourites.</string>
+    <string name="offline_title">Offline papers</string>
+    <string name="offline_empty">No downloaded papers yet. Download them from the papers screen.</string>
+    <string name="offline_row_format">%1$s · %2$s · saved %3$s</string>
+    <string name="request_title">Request a paper</string>
+    <string name="request_intro">Missing a paper you need? Describe it — subject code, semester and exam year help.</string>
+    <string name="request_hint">e.g. ICT 2308 Database Systems, 2019 exam</string>
+    <string name="request_counter_format">%1$d / %2$d</string>
+    <string name="request_submit">Send request</string>
+    <string name="request_sending">Sending…</string>
+    <string name="request_empty">Write what you need first.</string>
+    <string name="toast_request_sent">Request sent. The team will look for it.</string>
+    <string name="toast_no_pdf_viewer">No PDF viewer app is installed.</string>
+    <string name="dialog_remove_favourite_title">Remove favourite</string>
+    <string name="dialog_remove_favourite_message">Remove %1$s from your favourites?</string>
+    <string name="dialog_remove_offline_title">Delete offline copy</string>
+    <string name="dialog_remove_offline_message">Delete the downloaded file for %1$s?</string>
+    <string name="action_remove">Remove</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="dashboard_favourites">Favourites</string>
+    <string name="dashboard_offline">Offline papers</string>
+    <string name="dashboard_request">Request a paper</string>
+
     <string name="detail_title_format">Paper · %1$s</string>
     <string name="detail_department">Department</string>
     <string name="detail_study_year">Study year</string>

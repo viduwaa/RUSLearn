@@ -133,8 +133,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 Paper paper = paperFrom(cursor);
                 String filePath = cursor.getString(
                         cursor.getColumnIndexOrThrow(COLUMN_FILE_PATH));
+                long savedAt = cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_ADDED_AT));
                 if (paper != null) {
-                    result.add(new OfflinePaper(paper, filePath));
+                    result.add(new OfflinePaper(paper, filePath, savedAt));
                 }
             } while (cursor.moveToNext());
         }
@@ -143,16 +144,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Value holder for an offline paper: the original paper record plus the local
-     * PDF file path.
+     * Value holder for an offline paper: the original paper record, the local PDF
+     * file path and the save timestamp.
      */
     public static final class OfflinePaper {
         public final Paper paper;
         public final String filePath;
+        public final long savedAt;
 
-        OfflinePaper(Paper paper, String filePath) {
+        OfflinePaper(Paper paper, String filePath, long savedAt) {
             this.paper = paper;
             this.filePath = filePath;
+            this.savedAt = savedAt;
         }
     }
 
