@@ -37,9 +37,13 @@ FR01 uses Google sign-in; the ID token is only issued when the app knows an OAut
    `<string name="web_client_id">…</string>`.
 5. On the "OAuth consent screen", add yourself and your teammates as test users; Google
    verification isn't needed for internal testing (a yellow unverified-app notice with
-   an Advanced→Continue affordance will appear once — that's expected).
+   an Advanced→Continue affordance will appear once — that's expected). Test users are
+   only honoured while the consent status stays "Testing".
 6. Add the `drive.readonly` scope to the consent screen's scopes list (used by the
    FR14 offline download; ADR-0005).
+7. **APIs & Services → Library → enable "Google Drive API"** on the same project —
+   without it the authenticated download fails with 403 "Google Drive API has not been
+   used in project ..." (found live during testing).
 
 Only `tec.rjt.ac.lk` accounts pass the gate; other Google accounts are refused with a
 toast (try it — it's part of the FR01 test).

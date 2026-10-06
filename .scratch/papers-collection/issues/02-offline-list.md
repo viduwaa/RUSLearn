@@ -5,9 +5,10 @@ Status: resolved
 
 ## Comments
 
-- Device-passed: empty state renders; the open/delete cycle needs an actually
-  downloaded paper — left as the user's first-run demo after adding web_client_id
-  (FR14's authenticated layer), or a deliberately public Drive file (layer 1).
+- Device-passed END-TO-END: the authenticated Drive-API download returned 200/%PDF
+  (after enabling the Drive API on the OAuth project), the row landed, and the
+  stored PDF opened through FileProvider with AIRPLANE MODE ON (Drive PdfViewer,
+  real BPT 1201 paper). Airplane mode restored after the test.
 
 ## What
 
