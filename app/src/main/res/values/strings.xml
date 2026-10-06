@@ -4,4 +4,6 @@
     <string name="dashboard_title">FOT Academic Companion</string>
     <string name="dashboard_subtitle">Rajarata University · Faculty of Technology</string>
     <string name="dashboard_placeholder">Project bootstrapped (M0). Papers, GPA tools and tracking arrive in later milestones.</string>
+    <string name="debug_load_papers">Load papers (M1 debug)</string>
+    <string name="debug_zero_papers">No papers returned</string>
 </resources>
