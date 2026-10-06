@@ -118,6 +118,16 @@
         <item name="iconTint">@color/colorFaculty</item>
     </style>
 
+    <!-- ===== Clean dropdown pill (grade/status pickers, ticket 07) ===== -->
+
+    <style name="Spinner.RUSLearn" parent="Widget.AppCompat.Spinner">
+        <item name="android:background">@drawable/bg_dropdown_pill</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">28dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.RUSLearn.Code</item>
+        <item name="android:textColor">@color/colorFaculty</item>
+    </style>
+
     <!-- ===== Exposed dropdown (spec §3.5: Dropdown.RUSLearn) ===== -->
 
     <style name="Dropdown.RUSLearn" parent="Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">

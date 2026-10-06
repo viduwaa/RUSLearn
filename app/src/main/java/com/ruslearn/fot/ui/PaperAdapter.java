@@ -59,9 +59,11 @@ public class PaperAdapter extends ArrayAdapter<Paper> {
         holder.meta.setText(getContext().getString(R.string.paper_meta_format,
                 paper.getDepartmentCode(), paper.getAcademicYear(),
                 paper.getSemester(), paper.getExamYear()));
-        holder.star.setImageResource(favouriteIds.contains(paper.getDriveFileId())
+        boolean favourite = favouriteIds.contains(paper.getDriveFileId());
+        holder.star.setImageResource(favourite
                 ? R.drawable.ic_star_filled
                 : R.drawable.ic_star_outline);
+        holder.star.setOnClickListener(v -> UiMotion.pop(v));
         return convertView;
     }
 

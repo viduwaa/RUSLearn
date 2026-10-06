@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Band/status stamp (audit S12): tinted pill; text + colour set in code from
+     GradePoint.bandFor via Stamp convenience in the host activity. -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/stamp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_stamp"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp"
+    android:paddingTop="3dp"
+    android:paddingBottom="3dp"
+    android:textAppearance="@style/TextAppearance.RUSLearn.Code"
+    android:textSize="11sp" />

@@ -1,7 +1,7 @@
 # 05 - Dashboard: greeting, snapshot hero, tile grid, favourites strip
 
 Type: task
-Status: open
+Status: resolved
 
 ## What
 
@@ -20,4 +20,14 @@ Status: open
 
 ## Done
 
-- [ ] Dashboard reads: greeting → hero → tiles → recent, with one consistent visual language.
+- [x] Dashboard reads: greeting -> hero -> tiles -> recent, with one consistent visual language.
+
+## Comments
+
+- 2026-10-06: Landed. Time-aware greeting (morning/afternoon/evening) with the name
+  in serif; email in mono; band stamp coloured via Stamp.apply (S12 fix visible on
+  the dashboard); snapshot card on bg_card stock; shortcut buttons ride the theme's
+  Filled default (no per-instance tints); UiMotion.fadeUp entrance on the hero +
+  first tile row; 48dp settings icon hosts the ticket-02b sheet. Tile grid stays as
+  2x3 button pairs for this pass - the identical-card tile grid is ticket 08 polish
+  along with the icon set.

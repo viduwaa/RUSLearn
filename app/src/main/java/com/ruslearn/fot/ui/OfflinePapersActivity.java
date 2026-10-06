@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +41,7 @@ public class OfflinePapersActivity extends ToolbarActivity {
     private final List<String> displayRows = new ArrayList<>();
     private ArrayAdapter<String> listAdapter;
     private TextView tvEmpty;
+    private Button btnBrowse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +49,13 @@ public class OfflinePapersActivity extends ToolbarActivity {
         setContentView(R.layout.activity_offline_papers);
         bindToolbar(R.string.offline_title, true);
 
-        tvEmpty = findViewById(R.id.tvOfflineEmpty);
+        tvEmpty = findViewById(R.id.tvEmptyTitle);
+        tvEmpty.setText(R.string.offline_empty);
+        Button btnBrowseLocal = findViewById(R.id.btnEmptyAction);
+        btnBrowseLocal.setText(R.string.dashboard_browse_papers);
+        btnBrowseLocal.setOnClickListener(v ->
+                startActivity(new Intent(this, PapersActivity.class)));
+        btnBrowse = btnBrowseLocal;
 
         ListView lvOffline = findViewById(R.id.lvOffline);
         listAdapter = new ArrayAdapter<>(this,
@@ -81,7 +89,9 @@ public class OfflinePapersActivity extends ToolbarActivity {
                     DATE_FORMAT.format(new Date(row.savedAt))));
         }
         listAdapter.notifyDataSetChanged();
-        tvEmpty.setVisibility(offlinePapers.isEmpty() ? View.VISIBLE : View.GONE);
+        boolean empty = offlinePapers.isEmpty();
+        tvEmpty.setVisibility(empty ? View.VISIBLE : View.GONE);
+        btnBrowse.setVisibility(empty ? View.VISIBLE : View.GONE);
     }
 
     private void openOfflineCopy(int position) {

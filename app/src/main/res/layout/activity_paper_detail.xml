@@ -145,24 +145,30 @@
 
             <Button
                 android:id="@+id/btnOpenPaper"
+                style="@style/Button.RUSLearn.Filled"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="32dp"
-                android:text="@string/action_open" />
+                android:text="@string/action_open"
+                app:icon="@drawable/ic_open" />
 
             <Button
                 android:id="@+id/btnDownloadPaper"
+                style="@style/Button.RUSLearn.Tonal"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="12dp"
-                android:text="@string/action_download" />
+                android:text="@string/action_download"
+                app:icon="@drawable/ic_download" />
 
             <Button
                 android:id="@+id/btnFavourite"
+                style="@style/Button.RUSLearn.Outlined"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="12dp"
-                android:text="@string/action_favourite_save" />
+                android:text="@string/action_favourite_save"
+                app:icon="@drawable/ic_star_nav" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

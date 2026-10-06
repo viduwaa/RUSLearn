@@ -101,9 +101,6 @@ public class PapersActivity extends ToolbarActivity {
         spDepartment.setOnItemSelectedListener(refreshOnSelect);
         spExamYear.setOnItemSelectedListener(refreshOnSelect);
 
-        Button btnSearch = findViewById(R.id.btnSearch);
-        btnSearch.setOnClickListener(v -> refresh());
-
         loading = findViewById(R.id.loading);
         tvEmpty = findViewById(R.id.tvEmpty);
         tvResultCount = findViewById(R.id.tvResultCount);
@@ -119,6 +116,17 @@ public class PapersActivity extends ToolbarActivity {
         });
 
         etSearch = findViewById(R.id.etSearch);
+        etSearch.setOnEditorActionListener((v, actionId, event) -> {
+            refresh();
+            return true;
+        });
+        View retryButton = findViewById(R.id.btnEmptyAction);
+        if (retryButton != null) {
+            ((Button) retryButton).setText(R.string.action_retry);
+            retryButton.setOnClickListener(v -> {
+                loadInitial();
+            });
+        }
         loadInitial();
     }
 
@@ -283,6 +291,11 @@ public class PapersActivity extends ToolbarActivity {
     private void showEmpty(boolean visible, int messageResId) {
         tvEmpty.setText(messageResId);
         tvEmpty.setVisibility(visible ? View.VISIBLE : View.GONE);
+        boolean isError = visible && messageResId == R.string.papers_error_network;
+        View retry = findViewById(R.id.btnEmptyAction);
+        if (retry != null) {
+            retry.setVisibility(isError ? View.VISIBLE : View.GONE);
+        }
         if (visible) {
             tvResultCount.setText("");
         } else {

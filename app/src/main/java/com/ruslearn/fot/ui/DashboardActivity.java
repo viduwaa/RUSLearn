@@ -57,6 +57,9 @@ public class DashboardActivity extends AppCompatActivity {
         bindShortcut(R.id.btnGpa, GpaCalculatorActivity.class);
         bindShortcut(R.id.btnTracking, SubjectTrackingActivity.class);
 
+        // Spec §3.6: one staggered entrance per screen, ≤250ms total.
+        UiMotion.fadeUp(findViewById(R.id.tvDashGpa), findViewById(R.id.btnBrowsePapers));
+
         refreshData();
     }
 
@@ -72,8 +75,21 @@ public class DashboardActivity extends AppCompatActivity {
     private void renderSessionCard() {
         TextView tvName = findViewById(R.id.tvUserName);
         TextView tvEmail = findViewById(R.id.tvUserEmail);
-        tvName.setText(session.getName());
+        tvName.setText(getString(R.string.dashboard_greeting_format,
+                greetingWord(), session.getName()));
         tvEmail.setText(session.getEmail());
+    }
+
+    /** Time-aware greeting word (spec ticket 05): morning / afternoon / evening. */
+    private String greetingWord() {
+        int hour = java.util.Calendar.getInstance().get(java.util.Calendar.HOUR_OF_DAY);
+        if (hour < 12) {
+            return getString(R.string.greeting_morning);
+        }
+        if (hour < 17) {
+            return getString(R.string.greeting_afternoon);
+        }
+        return getString(R.string.greeting_evening);
     }
 
     private void bindShortcut(int buttonId, Class<?> target) {
@@ -118,9 +134,12 @@ public class DashboardActivity extends AppCompatActivity {
         if (Double.isNaN(totals.gpa)) {
             tvDashGpa.setText(getString(R.string.gpa_dash));
             tvDashBand.setText(getString(R.string.gpa_no_value));
+            tvDashBand.setTextColor(
+                    androidx.core.content.ContextCompat.getColor(this, R.color.colorInkMuted));
         } else {
             tvDashGpa.setText(getString(R.string.gpa_value_format, totals.gpa));
             tvDashBand.setText(GradePoint.bandFor(totals.gpa));
+            Stamp.apply(tvDashBand, totals.gpa);
         }
         tvDashCredits.setText(getString(R.string.gpa_credits_progress,
                 totals.creditsCompleted, GradePoint.TOTAL_CREDITS));

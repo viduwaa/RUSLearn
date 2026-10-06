@@ -44,6 +44,11 @@
     <string name="settings_developer">Developer details</string>
     <string name="settings_sign_out">Sign out</string>
     <string name="action_close">Close</string>
+    <string name="action_retry">Retry</string>
+    <string name="greeting_morning">Good morning</string>
+    <string name="greeting_afternoon">Good afternoon</string>
+    <string name="greeting_evening">Good evening</string>
+    <string name="dashboard_greeting_format">%1$s, %2$s</string>
     <string name="developer_details_format">RUSLearn v%1$s\nFOT Academic Companion — Rajarata University\nICT 3219 group project · past-paper portal client\nLocal data stays on this device (ADR-0002).</string>
 
     <string name="favourites_title">Favourites</string>

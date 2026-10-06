@@ -53,6 +53,10 @@ public class LoginActivity extends AppCompatActivity {
 
         findViewById(R.id.btnGoogleSignIn).setOnClickListener(v ->
                 signInLauncher.launch(googleClient.getSignInIntent()));
+
+        // The app's first impression (ticket 08): staggered entrance, ≤250ms.
+        UiMotion.fadeUp(findViewById(R.id.loginTitle), findViewById(R.id.loginHint),
+                findViewById(R.id.btnGoogleSignIn));
     }
 
     private void handleSignInResult(ActivityResult result) {

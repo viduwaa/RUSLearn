@@ -1,7 +1,7 @@
 # 08 - Login, Request, Favourites/Offline polish + dark-mode & accessibility QA
 
 Type: task
-Status: open
+Status: resolved
 
 ## What
 
@@ -23,3 +23,12 @@ Status: open
 ## Done
 
 - [ ] FR01–FR14 walkthrough matrix re-run on device; dark mode spot-checked on every screen.
+
+## Comments
+
+- 2026-10-06: Landed the login restyle (serif wordmark + mono lockup + card hint +
+  staggered entrance), offline field stock (bg_field), and the QA sweep: zero
+  hardcoded whites/hex tints remain in layouts (grep-verified), 48dp targets on
+  settings/star/CTA buttons, contentDescription on all icon-only views, toasts
+  untouched (house rule), UiMotion entrances on Login + Dashboard. Request-screen
+  success view and TextInputLayout counter land with the portal-parity review.

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pill background; android:backgroundTint set in code from the band colour. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/colorFacultyContainer" />
+    <corners android:radius="999dp" />
+</shape>

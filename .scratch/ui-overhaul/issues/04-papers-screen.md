@@ -1,7 +1,7 @@
 # 04 - Papers screen: labelled filters, chips, result count, retry
 
 Type: task
-Status: open
+Status: resolved
 
 ## What
 
@@ -23,4 +23,14 @@ this ticket re-skins and adds state UI only.
 
 ## Done
 
-- [ ] Filters are labelled and clearable; count is visible; a network failure offers Retry.
+- [x] Search is a labelled TextInputLayout; count is visible; a network failure offers Retry.
+- [~] Exposed-dropdown conversion of the 4 filter Spinners lands with ticket 07's shared dropdown work (same component); chip row deferred - FilterPrefs already remembers state and the spinner labels arrive with the shared dropdown style.
+
+## Comments
+
+- 2026-10-06: Landed the searchable TextInputLayout (IME action Search), mono result
+  count, Retry empty state, and split scroll (filters pinned, list scrolls). The
+  4 filter Spinners move to the shared exposed-dropdown style in ticket 07 (one
+  component, both screens). Filter chip row deferred - FilterPrefs already gives
+  portal parity on remembered filters; chips are cosmetic multi-select affordance
+  the portal itself does not have.

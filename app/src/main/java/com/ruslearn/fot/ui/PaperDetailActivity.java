@@ -100,6 +100,7 @@ public class PaperDetailActivity extends ToolbarActivity {
             isFavourite = true;
             Toast.makeText(this, R.string.toast_fav_saved, Toast.LENGTH_SHORT).show();
         }
+        UiMotion.pop(btnFavourite);
         refreshActionButtons();
     }
 

@@ -1,7 +1,7 @@
 # 06 - Paper detail: hero, meta grid, icon action row, offline chip
 
 Type: task
-Status: open
+Status: resolved
 
 ## What
 
@@ -22,4 +22,12 @@ Open/Drive/download/favourite logic in `PaperDetailActivity` is untouched — la
 
 ## Done
 
-- [ ] Detail screen reads as hero → meta → actions, with icon-led buttons and a visible offline state.
+- [x] Detail screen reads as hero -> meta -> actions, with icon-led buttons and a visible offline state.
+
+## Comments
+
+- 2026-10-06: Landed. Meta card on bg_card stock with weight-based label/value
+  columns (no fixed 110dp); action row is Filled+doc / Tonal+download / Outlined+star
+  via the shared button styles with vector icons; favourite taps pop (UiMotion.pop).
+  Offline badge stays a mono green line pending the stamp chip (ticket 08 QA pass
+  will convert it to a Stamp pill).

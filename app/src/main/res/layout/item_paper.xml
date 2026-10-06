@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Paper row v2 (audit S6/S11): card-like row ≥48dp — mono code, sans name,
+     mono meta, star in a 48dp touch target; root wrap_content (fixes the
+     match_parent-in-ListView bug). -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:padding="16dp">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/bg_card"
+    android:baselineAligned="false"
+    android:orientation="horizontal">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -15,29 +20,39 @@
             android:id="@+id/tvPaperCode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:textSize="14sp"
+            android:layout_marginTop="12dp"
+            android:textAppearance="@style/TextAppearance.RUSLearn.Code"
+            android:textColor="@color/colorFaculty"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvPaperName"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorText"
-            android:textSize="15sp" />
+            android:textAppearance="@style/TextAppearance.RUSLearn.Body"
+            android:textColor="@color/colorInk"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvPaperMeta"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorTextMuted"
-            android:textSize="12sp" />
+            android:layout_marginBottom="12dp"
+            android:textAppearance="@style/TextAppearance.RUSLearn.Code"
+            android:textColor="@color/colorInkMuted" />
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/ivFavouriteStar"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:contentDescription="@string/content_favourite_star"
-        android:src="@drawable/ic_star_outline" />
+    <FrameLayout
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/ivFavouriteStar"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/content_favourite_star"
+            android:src="@drawable/ic_star_outline" />
+    </FrameLayout>
 </LinearLayout>

@@ -16,20 +16,15 @@
             android:id="@+id/lvOffline"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="@color/colorHairline"
-            android:dividerHeight="1dp"
+            android:divider="@null"
+            android:dividerHeight="0dp"
             android:scrollbars="none" />
 
-        <TextView
-            android:id="@+id/tvOfflineEmpty"
+        <include
+            android:id="@+id/emptyState"
+            layout="@layout/view_empty_state"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:padding="24dp"
-            android:text="@string/offline_empty"
-            android:textAppearance="@style/TextAppearance.RUSLearn.Body"
-            android:textColor="@color/colorInkMuted"
-            android:visibility="gone" />
+            android:layout_gravity="center" />
     </FrameLayout>
 </LinearLayout>

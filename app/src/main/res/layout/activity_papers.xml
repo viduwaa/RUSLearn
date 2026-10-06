@@ -8,140 +8,136 @@
 
     <include layout="@layout/view_toolbar" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="16dp">
+        android:layout_weight="1">
 
         <LinearLayout
-            android:id="@+id/searchRow"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:baselineAligned="false"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <EditText
-                android:id="@+id/etSearch"
-                style="@style/TextAppearance.RUSLearn.Body"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_weight="1"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilSearch"
+                style="@style/Dropdown.RUSLearn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:hint="@string/papers_search_hint"
-                android:importantForAutofill="no"
-                android:inputType="text"
-                android:maxLines="1" />
+                app:startIconDrawable="@android:drawable/ic_menu_search">
 
-            <Button
-                android:id="@+id/btnSearch"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionSearch"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/filterRowTop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/spStudyYear"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1" />
+
+                <Spinner
+                    android:id="@+id/spSemester"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/filterRowBottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/spDepartment"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1" />
+
+                <Spinner
+                    android:id="@+id/spExamYear"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvResultCount"
                 android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_marginStart="8dp"
-                android:text="@string/papers_search" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:textAppearance="@style/TextAppearance.RUSLearn.Code"
+                android:textColor="@color/colorInkMuted" />
         </LinearLayout>
+    </ScrollView>
 
-        <LinearLayout
-            android:id="@+id/filterRowTop"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:baselineAligned="false"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/searchRow">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.4"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
 
-            <Spinner
-                android:id="@+id/spStudyYear"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_weight="1" />
-
-            <Spinner
-                android:id="@+id/spSemester"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/filterRowBottom"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:baselineAligned="false"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/filterRowTop">
-
-            <Spinner
-                android:id="@+id/spDepartment"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_weight="1" />
-
-            <Spinner
-                android:id="@+id/spExamYear"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tvResultCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:textAppearance="@style/TextAppearance.RUSLearn.Code"
-            android:textColor="@color/colorInkMuted"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/filterRowBottom" />
+        <ListView
+            android:id="@+id/lvPapers"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/colorHairline"
+            android:dividerHeight="1dp"
+            android:scrollbars="none" />
 
         <ProgressBar
             android:id="@+id/loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@id/lvPapers"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/lvPapers" />
+            android:layout_gravity="center"
+            android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/tvEmpty"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:gravity="center"
-            android:padding="24dp"
-            android:textAppearance="@style/TextAppearance.RUSLearn.Body"
-            android:textColor="@color/colorInkMuted"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@id/lvPapers"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/lvPapers" />
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
 
-        <ListView
-            android:id="@+id/lvPapers"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            android:divider="@color/colorHairline"
-            android:dividerHeight="1dp"
-            android:scrollbars="none"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvResultCount" />
+            <TextView
+                android:id="@+id/tvEmpty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="24dp"
+                android:textAppearance="@style/TextAppearance.RUSLearn.Body"
+                android:textColor="@color/colorInkMuted" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <Button
+                android:id="@+id/btnEmptyAction"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/action_retry"
+                android:visibility="gone" />
+        </LinearLayout>
+    </FrameLayout>
 
     <include layout="@layout/view_bottom_nav" />
 </LinearLayout>

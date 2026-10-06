@@ -1,7 +1,7 @@
 # 03 - Shared components: card stock, paper rows, empty states, stamps, motion
 
 Type: task
-Status: open
+Status: resolved
 
 ## What
 
@@ -21,4 +21,13 @@ Status: open
 
 ## Done
 
-- [ ] Paper rows are card-like with visible press feedback; empty lists offer a CTA.
+- [x] Paper rows are card-like with visible press feedback; empty lists offer a CTA.
+
+## Comments
+
+- 2026-10-06: Landed. item_paper v2 (bg_card, mono code + sans name + mono meta,
+  star in a 48dp FrameLayout target, root wrap_content), view_empty_state include
+  (icon circle + title + CTA button; used by Favourites/Offline with "Browse papers"
+  and Papers with "Retry"), view_stamp + bg_stamp pill, Stamp.java (band to colour,
+  alpha-composited tint over card), UiMotion.java (fadeUp stagger + star pop, both
+  <=250ms). PaperAdapter stars pop on tap.
