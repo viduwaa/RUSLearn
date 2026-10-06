@@ -148,6 +148,7 @@ public class PapersActivity extends AppCompatActivity {
                     restoreRemembered();
                 });
             } catch (IOException e) {
+                android.util.Log.w("PaperApi", "initial papers load failed", e);
                 runOnUiThread(() -> {
                     loading.setVisibility(View.GONE);
                     showToast(e.getMessage());

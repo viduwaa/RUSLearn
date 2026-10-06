@@ -81,12 +81,15 @@ public class PaperApi {
 
     private static void assertSuccess(RestClient.RawResponse response) throws IOException {
         if (response.code == 429) {
+            android.util.Log.w("PaperApi", "portal rate limit hit (429)");
             throw new IOException(RATE_LIMIT_MESSAGE);
         }
         if (response.code >= 500) {
+            android.util.Log.w("PaperApi", "portal server error (" + response.code + ")");
             throw new IOException(SERVER_ERROR_MESSAGE);
         }
         if (response.code != 200) {
+            android.util.Log.w("PaperApi", "unexpected portal status " + response.code);
             throw new IOException("Request failed (HTTP " + response.code + ")");
         }
     }

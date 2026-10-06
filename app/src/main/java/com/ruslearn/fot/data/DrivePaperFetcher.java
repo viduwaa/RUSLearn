@@ -84,11 +84,14 @@ public class DrivePaperFetcher {
     private File tryDriveApiDownload(Paper paper) throws IOException {
         String token = GoogleAuth.driveAccessToken(context);
         if (token == null) {
+            Log.i(TAG, "drive token unavailable");
             return null;
         }
         String url = "https://www.googleapis.com/drive/v3/files/" + paper.getDriveFileId()
                 + "?alt=media";
         RestClient.RawResponse response = RestClient.get(url, token);
+        Log.i(TAG, "drive api status " + response.code + " body: "
+                + response.body.substring(0, Math.min(200, response.body.length())));
         if (response.code != 200 || !isPdfBytes(response.bytes)) {
             return null;
         }
