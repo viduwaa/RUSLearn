@@ -8,7 +8,11 @@
     android:layout_marginBottom="8dp"
     android:background="@drawable/bg_card"
     android:baselineAligned="false"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingStart="16dp"
+    android:paddingEnd="8dp"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -29,6 +33,7 @@
             android:id="@+id/tvPaperName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:textAppearance="@style/TextAppearance.RUSLearn.Body"
             android:textColor="@color/colorInk"
             android:textStyle="bold" />
@@ -37,6 +42,7 @@
             android:id="@+id/tvPaperMeta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:layout_marginBottom="12dp"
             android:textAppearance="@style/TextAppearance.RUSLearn.Code"
             android:textColor="@color/colorInkMuted" />

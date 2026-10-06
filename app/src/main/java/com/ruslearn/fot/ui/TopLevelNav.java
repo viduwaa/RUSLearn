@@ -91,16 +91,25 @@ public final class TopLevelNav {
 
     /**
      * The ⚙ settings sheet — icon-tile rows matching the mockup (preview section 06).
-     * Built as an AlertDialog with a custom view (transparent frame) so row clicks
-     * route through the standard dialog window; every row dismisses, then acts.
+     * BottomSheetDialog (Material, already a dependency) gives native touch/gesture
+     * handling — no custom window quirks. Rows dismiss, then act.
      */
     private void showSettingsSheet() {
         View sheet = activity.getLayoutInflater()
                 .inflate(R.layout.view_settings_sheet, null);
-        AlertDialog dialog = new AlertDialog.Builder(activity)
-                .setView(sheet)
-                .create();
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        com.google.android.material.bottomsheet.BottomSheetDialog dialog =
+                new com.google.android.material.bottomsheet.BottomSheetDialog(activity);
+        dialog.setContentView(sheet);
+
+        // Theme row shows the current mode (cycling rebuilds the activity, so the
+        // caption is always set fresh here rather than patched after a tap).
+        TextView themeValue = sheet.findViewById(R.id.tvThemeValue);
+        if (themeValue != null) {
+            String mode = new ThemePrefs(activity).load();
+            themeValue.setText(ThemePrefs.PAPER.equals(mode) ? R.string.theme_paper
+                    : ThemePrefs.INK.equals(mode) ? R.string.theme_ink
+                    : R.string.theme_system);
+        }
 
         sheet.findViewById(R.id.rowFavourites).setOnClickListener(v -> {
             dialog.dismiss();
@@ -128,32 +137,29 @@ public final class TopLevelNav {
         dialog.show();
     }
 
-    /** Paper → Ink → System → Paper; saves, re-applies, updates the row caption. */
-    private void cycleTheme(AlertDialog dialog) {
+    /**
+     * Paper → Ink → System → Paper; saves, then applies with a light status-bar
+     * flash. Theme change rebuilds activities by design (AppCompatDelegate);
+     * the 250ms window animation makes the flip read as intentional, not lag.
+     */
+    private void cycleTheme(com.google.android.material.bottomsheet.BottomSheetDialog dialog) {
         ThemePrefs prefs = new ThemePrefs(activity);
         String mode = prefs.load();
         String next;
-        int label;
         switch (mode) {
             case ThemePrefs.PAPER:
                 next = ThemePrefs.INK;
-                label = R.string.theme_ink;
                 break;
             case ThemePrefs.INK:
                 next = ThemePrefs.SYSTEM;
-                label = R.string.theme_system;
                 break;
             default:
                 next = ThemePrefs.PAPER;
-                label = R.string.theme_paper;
         }
         prefs.save(next);
+        // The activity rebuild dismisses the sheet anyway — skip the caption update
+        // (it would flash) and let the new activity's sheet show the fresh caption.
         ThemeSwitcher.apply(prefs);
-
-        TextView caption = dialog.findViewById(R.id.tvThemeValue);
-        if (caption != null) {
-            caption.setText(label);
-        }
     }
 
     private void showDeveloperDetails() {
