@@ -10,3 +10,7 @@ captures/
 .commandcode/
 graphify-out/
 .freebuff/
+# Release signing material — never commit.
+keystore.properties
+*.jks
+*.keystore
