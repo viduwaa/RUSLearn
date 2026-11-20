@@ -63,6 +63,19 @@ public class SubjectTrackingActivity extends ToolbarActivity {
         void onStatusPicked(Subject subject, String status);
     }
 
+    // =========================================================================
+    // 1. ACTIVITY LIFECYCLE: onCreate
+    // =========================================================================
+    /**
+     *Entry point of the Subject Tracking screen.
+     * What happens here:
+     * 1. Sets layout (activity_tracking.xml) and attaches top toolbar + bottom navigation bar.
+     * 2. Checks session to ensure the student is signed in (redirects if not).
+     * 3. Finds UI components (Spinners, TextViews, ProgressBar, ListView) via findViewById.
+     * 4. Initializes Adapters for Programme and Semester dropdowns (Spinners).
+     * 5. Sets up ListView with StatusRowAdapter to display subject rows.
+     * 6. Loads the degree programmes from SubjectCatalogLoader (JSON catalog).
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,6 +149,18 @@ public class SubjectTrackingActivity extends ToolbarActivity {
         programAdapter.notifyDataSetChanged();
     }
 
+    // =========================================================================
+    // 2. USER SELECTION HANDLERS: Programme & Semester
+    // =========================================================================
+
+    /**
+     *Called when the user picks a Degree Programme (e.g., BICT, BST, ET).
+     * 1. Loads the program structure from the JSON catalog.
+     * 2. Reads previously saved statuses (Completed/Current/Upcoming) from the SQLite
+     *    table 'subject_records' for this user & programme.
+     * 3. Calls recomputeSummary() to update progress bar and counters.
+     * 4. Populates the Semester dropdown with this program's semesters.
+     */
     private void programPicked(String programCode) {
         program = SubjectCatalogLoader.load(this).get(programCode);
         if (program == null) {
@@ -160,6 +185,11 @@ public class SubjectTrackingActivity extends ToolbarActivity {
         }
     }
 
+    /**
+     *Called when the user picks a Semester from the dropdown.
+     * 1. Retrieves the subjects for that semester from the program.
+     * 2. Updates the ListView via statusRowAdapter.notifyDataSetChanged().
+     */
     private void semesterPicked(String pickedKey) {
         if (program == null || pickedKey == null
                 || program.getSemesters().get(pickedKey) == null) {
@@ -171,6 +201,18 @@ public class SubjectTrackingActivity extends ToolbarActivity {
         statusRowAdapter.notifyDataSetChanged();
     }
 
+    // =========================================================================
+    // 3. STATUS CHANGE & INSTANT AUTO-SAVE
+    // =========================================================================
+
+    /**
+     *Called whenever the student changes a subject status (None/Completed/Current/Upcoming).
+     * 1. Updates the in-memory 'statuses' map.
+     * 2. Instantly auto-saves to SQLite via DatabaseHelper.saveSubjectStatus(...).
+     *    - Key: (user_email, program_code, subject_code).
+     *    - If status is "None", DatabaseHelper deletes the row.
+     * 3. Calls recomputeSummary() to immediately refresh the progress bar and counters.
+     */
     private void onStatusPicked(Subject subject, String status) {
         statuses.put(subject.getCode(), status);
         DatabaseHelper db = new DatabaseHelper(this);
@@ -180,7 +222,18 @@ public class SubjectTrackingActivity extends ToolbarActivity {
         recomputeSummary();
     }
 
-    /** Completed credits out of 120 plus the current-semester subject count (FR11). */
+    // =========================================================================
+    // 4. PROGRESS SUMMARY: recomputeSummary
+    // =========================================================================
+
+    /**
+     *Calculates degree completion and currently taking counts.
+     * 1. Iterates through all subjects across all semesters in the programme.
+     * 2. If status is "Completed": sums up their credits (e.g. 3 credits + 2 credits ...).
+     * 3. If status is "Current": increments the count of subjects currently being studied.
+     * 4. Updates pbTracking (ProgressBar) out of 120 total credits.
+     * 5. Updates tvCompletedCredits ("45 / 120 credits completed") and tvCurrentlyTaking ("5 subjects").
+     */
     private void recomputeSummary() {
         int completedCredits = 0;
         int currentCount = 0;
@@ -201,7 +254,15 @@ public class SubjectTrackingActivity extends ToolbarActivity {
         tvCurrentlyTaking.setText(getString(R.string.tracking_current_format, currentCount));
     }
 
-    /** Same row shape as the GPA calculator; the right spinner picks a status. */
+    // =========================================================================
+    // 5. LISTVIEW ADAPTER: StatusRowAdapter & ViewHolder
+    // =========================================================================
+
+    /**
+     *Custom ArrayAdapter that displays each Subject row for tracking.
+     * Reuses the same XML layout as the GPA screen (item_subject_value.xml),
+     * but the spinner dropdown shows statuses: [None, Completed, Current, Upcoming].
+     */
     private final class StatusRowAdapter extends ArrayAdapter<Subject> {
 
         private final OnStatusPicked listener;
@@ -211,6 +272,14 @@ public class SubjectTrackingActivity extends ToolbarActivity {
             this.listener = listener;
         }
 
+        /**
+         *Called by Android to render each subject row in the ListView.
+         * 1. Recycles views using ViewHolder pattern.
+         * 2. Sets Subject Code, Name, and Credits.
+         * 3. Populates status dropdown with STATUS_OPTIONS (None, Completed, Current, Upcoming).
+         * 4. Pre-selects the saved status from SQLite for this subject.
+         * 5. Listens for user selection and triggers onStatusPicked(...).
+         */
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder holder;

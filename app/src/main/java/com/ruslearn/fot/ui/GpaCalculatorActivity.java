@@ -66,6 +66,19 @@ public class GpaCalculatorActivity extends ToolbarActivity {
         void onGradePicked(Subject subject, String grade);
     }
 
+    // =========================================================================
+    // 1. ACTIVITY LIFECYCLE: onCreate
+    // =========================================================================
+    /**
+     * Entry point of the screen (called when this Activity is launched).
+     * What happens here:
+     * 1. Loads XML layout (activity_gpa.xml) and sets up toolbar + bottom navigation bar.
+     * 2. Checks if the student is logged in using SessionManager; redirects if not.
+     * 3. Finds all UI elements (Spinners, Buttons, TextViews, ProgressBar) using findViewById.
+     * 4. Sets up listeners for Program & Semester dropdowns (Spinners).
+     * 5. Connects the "Save Grades" button click listener to saveGrades().
+     * 6. Loads the degree programmes from SubjectCatalogLoader (JSON catalog) into the dropdown.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -147,7 +160,17 @@ public class GpaCalculatorActivity extends ToolbarActivity {
         programAdapter.notifyDataSetChanged();
     }
 
-    /** Loads the programme, restores its saved grades and lists its semesters. */
+    // =========================================================================
+    // 2. USER SELECTION HANDLERS: Programme & Semester
+    // =========================================================================
+
+    /**
+     *Called when the user picks a Degree Programme (e.g., BICT, BST, ET).
+     * 1. Loads the program curriculum structure from SubjectCatalogLoader.
+     * 2. Queries SQLite (DatabaseHelper) to fetch previously saved grades for this student and program.
+     * 3. Populates the Semester dropdown with the semesters belonging to this program.
+     * 4. Automatically selects the first semester to display its subjects.
+     */
     private void programPicked(String programCode) {
         program = SubjectCatalogLoader.load(this).get(programCode);
         if (program == null) {
@@ -171,6 +194,12 @@ public class GpaCalculatorActivity extends ToolbarActivity {
         }
     }
 
+    /**
+     * Called when the user picks a Semester from the dropdown (e.g., Year 1 Semester 1).
+     * 1. Fetches the list of subjects for this semester from the loaded program.
+     * 2. Clears the previous subject list and updates the ListView via gradeRowAdapter.notifyDataSetChanged().
+     * 3. Triggers recomputeCards() to refresh GPA numbers and credit totals.
+     */
     private void semesterPicked(String pickedKey) {
         if (program == null || pickedKey == null
                 || program.getSemesters().get(pickedKey) == null) {
@@ -183,15 +212,34 @@ public class GpaCalculatorActivity extends ToolbarActivity {
         recomputeCards();
     }
 
+    // =========================================================================
+    // 3. GRADE CHANGE & "WHAT-IF" PREDICTION
+    // =========================================================================
+
+    /**
+     *Called whenever a grade dropdown is changed for any subject row.
+     * 1. Updates currentGrades map in memory (does NOT write to SQLite yet!).
+     * 2. Calls recomputeCards() immediately.
+     * 3. This powers the "What-If" prediction (FR08) — the student sees their predicted
+     *    GPA in real time on the "Current" card without altering their saved records.
+     */
     private void onGradePicked(Subject subject, String grade) {
         currentGrades.put(subject.getCode(), grade);
         recomputeCards();
     }
 
+    // =========================================================================
+    // 4. DATABASE PERSISTENCE: saveGrades
+    // =========================================================================
+
     /**
-     * Persists every semester's entries in one go (not just the displayed one):
-     * all grades picked this session live in currentGrades, keyed by subject code,
-     * so the save walks the whole programme. "None" entries drop old rows.
+     *Called when the student clicks the "Save Grades" button.
+     * 1. Iterates through all subjects across all semesters in the selected program.
+     * 2. Writes each grade into the local SQLite table 'grade_records' via DatabaseHelper.
+     *    - Key: (user_email, program_code, subject_code).
+     *    - If a grade is "None", DatabaseHelper deletes the row to save space.
+     * 3. Shows a brief Toast message to confirm ("Grades saved").
+     * 4. Updates the "Saved" GPA card so it matches the newly saved state.
      */
     private void saveGrades() {
         if (program == null) {
@@ -209,7 +257,19 @@ public class GpaCalculatorActivity extends ToolbarActivity {
         recomputeCards();
     }
 
-    /** Recomputes both GPA cards, their bands, the credits bar and the semester chip. */
+    // =========================================================================
+    // 5. CALCULATIONS & DISPLAY: recomputeCards & showCard
+    // =========================================================================
+
+    /**
+     *The core calculation engine for this screen.
+     * 1. Reads officially saved grades from SQLite to calculate and show the "Saved GPA" card.
+     * 2. Reads live grades from currentGrades to calculate and show the "Current (What-If)" card.
+     * 3. Uses GradePoint.overallOf() to compute cumulative GPA:
+     *    GPA = Sum(credits * points) / Sum(credits).
+     * 4. Updates the degree completion ProgressBar (out of 120 credits).
+     * 5. Uses GradePoint.gpaOf() to compute the single semester GPA chip for the currently selected semester.
+     */
     private void recomputeCards() {
         if (program == null) {
             return;
@@ -237,6 +297,13 @@ public class GpaCalculatorActivity extends ToolbarActivity {
                 : getString(R.string.gpa_value_format, semesterGpa));
     }
 
+    /**
+     * Formats and displays a GPA card on the screen.
+     * - If GPA is NaN (no grades entered yet), shows "-" and "No grades".
+     * - If GPA is valid, formats to 2 decimal places (e.g., "3.75").
+     * - Maps GPA to class honors (e.g., First Class, Second Upper) using GradePoint.bandFor(gpa).
+     * - Colors the badge using Stamp.apply(bandView, gpa).
+     */
     private void showCard(TextView valueView, TextView bandView, double gpa) {
         if (Double.isNaN(gpa)) {
             valueView.setText(getString(R.string.gpa_dash));
@@ -250,10 +317,13 @@ public class GpaCalculatorActivity extends ToolbarActivity {
         Stamp.apply(bandView, gpa);
     }
 
+    // =========================================================================
+    // 6. LISTVIEW ADAPTER: GradeRowAdapter & ViewHolder
+    // =========================================================================
+
     /**
-     * Subject rows for one semester. View recycling rebinds the spinner options; a
-     * rebound spinner may fire one synthetic selection event — harmless, because the
-     * calculator reads only the current grade map.
+     *Custom ArrayAdapter that converts each Subject into a row inside the ListView.
+     * Uses the "ViewHolder Pattern" for performance (avoids repeated expensive findViewById calls).
      */
     private final class GradeRowAdapter extends ArrayAdapter<Subject> {
 
@@ -264,6 +334,16 @@ public class GpaCalculatorActivity extends ToolbarActivity {
             this.listener = listener;
         }
 
+        /**
+         * Called by Android for every row visible on the screen.
+         * 1. Inflates item_subject_value.xml layout if needed (or recycles convertView).
+         * 2. Sets Subject Code, Subject Name, and Credits.
+         * 3. Checks if the subject is Non-GPA:
+         *    - If Non-GPA (e.g. English), dropdown shows [Pass, Fail, None].
+         *    - If GPA subject, dropdown shows [A+, A, A-, B+ ... E, None].
+         * 4. Pre-selects the previously entered grade for this subject.
+         * 5. Listens for user grade selections and notifies listener.onGradePicked(...).
+         */
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder holder;
